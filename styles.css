@@ -7,7 +7,7 @@ html {
 }
 
 body {
-  background: url("https://github.com/PeppermintSnow/ExcelForEfficiency/blob/main/images/bg/bg.jpg?raw=true") #00000075 fixed;
+  background: url("images/bg/bg.jpg") #00000075 fixed;
   background-blend-mode: darken;
   color: #C5B4E3;
   overflow-x: hidden;
