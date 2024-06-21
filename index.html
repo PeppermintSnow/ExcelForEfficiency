@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <title>TOPIC</title>
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="header-container">
+        <a id="logo-link" href=""><img id="logo" src="https://github.com/PeppermintSnow/ExcelForEfficiency/blob/main/images/head/logo.png?raw=true" /></a>
+        <header><span class="green">Excel</span> <span class="yellow">For Efficiency!</span></header>
+      </div>
+      <ul>
+        <fieldset class="divider">
+          <legend>Basic Information</legend>
+        </fieldset>
+        <a class="nav-link" href="#About"><li>About</li></a>
+        <a class="nav-link" href="#Installation"><li>Installation</li></a>
+        <fieldset class="divider">
+          <legend>Lessons/Content</legend>
+        </fieldset>
+        <a class="nav-link" href="#Basics"><li>Basics</li></a>
+        <a class="nav-link" href="#Formulas"><li>Formulas</li></a>
+        <a class="nav-link" href="#Functions"><li>Functions</li></a>
+        <a class="nav-link" href="#Sorting"><li>Sorting</li></a>
+        <a class="nav-link" href="#Charts"><li>Charts</li></a>
+        <fieldset class="divider">
+          <legend>References & Credits</legend>
+        </fieldset>
+        <a class="nav-link" href="#References"><li>References</li></a>
+      </ul>
+      <footer>
+          <p>©2024 <span class="green">Excel</span> <span class="yellow">For Efficiency!</span></p>
+          <p>by <a id="github-link" href="https://www.github.com/PeppermintSnow">@PeppermintSnow</a></p>
+          <p>All rights reserved.</p>
+      </footer>
+    </nav>
+    <main id="main-doc" class="flex-wrapper">
+      <section class="main-section" id="About">
+        <header>About</header>
+        <p><span class="green">Excel</span> <span class="yellow">For Efficiency!</span> is an educational primer with the objective of teaching its
+audience the basics of utilizing a spreadsheet application. This educational primer
+contains features and attributes which help facilitate the learning of the audience.</p>
+      </section>
+      <section class="main-section" id="Installation">
+        <header>Installation</header>
+        <p><span class="green">Excel</span> <span class="yellow">For Efficiency!</span> is developed in PowerPoint with the use of Visual Basic Macros.</p>
+        <p>Listed below are the steps for installation:</p>
+        <ol>
+          <li>Download from the <a id="download-link" href="https://peppermintsnow.github.io/ExcelForEfficiency/download.html">links in the website</a></li>
+            <p class="installation-steps">Select your chosen version (i.e. Full Version or Demo Version) from the download links provided in the website. Simply, click on the button and download.</p>
+          <li>Extract the files and run "unblock.bat"</li>
+            <p class="installation-steps">By default, Microsoft disables the functions of "macros" or the codes within the PowerPoint presentation. By running "unblock.bat", the files are given the necessary permissions to function properly.</p>
+          <li>Run "ExcelForEfficiency.pptm"</li>
+            <p class="installation-steps">In case a prompt appears saying "Macros has been disabled", simply click on the "Enable" button. Without macros, the program would have no functionality.</p>
+        </ol>
+      </section>
+      <section class="main-section" id="Basics">
+        <header>Basics</header>
+        <p>The spreadsheet interface consists of 5 elements, namely,</p>
+        <ol class="list-elements">
+          <li><span class="green">Name box</span><p>It displays the cell reference or the name of the active cell.</p>
+          <li><span class="yellow">Formula bar</span><p>It can be used for entering and editing data formulas. It also actively displays the content of the active cell.</p>
+          <li><span class="green">Sheet tabs</span><p> It tells what is the name of the worksheet you’re currently working with. You can also change to different worksheets by clicking the worksheet file beside it.</p>
+          <li><span class="yellow">Row numbers</span><p>It runs vertically in a worksheet and is identified by a number in the row header.</p>
+          <li><span class="green">Column letters</span><p>It runs horizontally in a worksheet and is identified by a number in the column header.</p>
+</li>
+        </ol>
+      </section>
+      <section class="main-section" id="Formulas">
+        <header>Formulas</header>
+        <p><span class="green">Excel</span> uses standard operators for formulas.</p>
+        <ul class="ulist-elements">
+        <li><p><span class="yellow">Plus sign</span> <span class="green">(+)</span> for addition</p></li>
+        <li><p><span class="yellow">Minus sign</span> <span class="green">(-)</span> for subtraction</p></li>
+        <li><p><span class="yellow">Asterisk</span> <span class="green">(*)</span> for multiplication</p></li>
+        <li><p><span class="yellow">Forward slash</span> <span class="green">(/)</span> for division</p></li>
+        <li><p><span class="yellow">Caret</span> <span class="green">(^)</span> for exponents</p></li>
+        </ul>
+        <p>An <span class="yellow">equals sign</span> <span class="green">(=)</span> is used to start a formula. A complex formula will follow the <span class="yellow">PEM</span><span class="green">DAS</span> order.
+</p>
+        <div class="code-container">
+          <code>
+            <span class="yellow">PEM</span><span class="green">DAS</span> wherein: <br /> <br />
+            <span class="yellow">P</span>arenthesis<br />
+            <span class="yellow">E</span>xponent<br />
+            <span class="yellow">M</span>ultiplication<br />
+            <span class="green">D</span>ivision<br />
+            <span class="green">A</span>ddition<br />
+            <span class="green">S</span>ubtraction<br />
+          </code>
+        </div>
+        <p><span  class="green">Excel</span> has a feature that allows you to calculate values from specific cell addresses.</p>
+        <p><span class="yellow">Cell addresses</span> are a combination of a column letter and a row number. When incorporated in a formula, these are known as a cell reference. Utilizing cell references will make formulas more accurate.</p>
+      </section>
+      <section class="main-section" id="Functions">
+        <header>Functions</header>
+        <p>A <span class="yellow">function</span> is a predefined formula in <span class="green">Excel</span> which performs calculations for a specific value using cell references.</p>
+        <div class="code-container">
+          <code> <span class="bold">=</span><span class="yellow">SUM</span><span class="green">(A1:A5)</span></code>
+        </div>
+        <p>A function consists of the <span class="bold">equals sign (=)</span>, the <span class="yellow">function name</span>, and <span class="green">one or more arguments</span>. An argument is a range of cell addresses or any input that you provide to a function.
+</p>
+        <p>A few of the most commonly used functions are listed below:</p>
+        <ol class="list-elements">
+          <li>
+            <span class="green">SUM</span>
+            <p>adds all values of cells in the argument.</p>
+          </li>
+          <li>
+            <span class="yellow">AVERAGE</span>
+            <p>gets the average of all the values of cells in the argument.</p>
+          </li>
+          <li>
+            <span class="green">COUNT</span>
+            <p>counts the number of cells with numerical data in the argument.</p>
+          </li>
+          <li>
+            <span class="yellow">MAX</span>
+            <p>gets the highest cell value included in the argument.</p>
+          </li>
+          <li>
+            <span class="green">MIN</span>
+            <p>gets the lowest cell value included in the argument.</p>
+            </li>
+        </ol>
+        <p>Here are some example scenarios wherein you might make use of some of the functions:</p>
+        <div class="code-container">
+          <code>
+            <span class="bold">=</span><span class="yellow">AVERAGE</span><span class="green">(B2:F2)</span><p><span class="bold">Outputs</span> the <span class="green">average of all values</span> in <span class="yellow">cells B2 to F2</span></p>
+          </code>
+          <br />
+          <code>
+            <span class="bold">=</span><span class="yellow">COUNT</span><span class="green">(A2:C5)</span><p><span class="bold">Outputs</span> the <span class="green">number of all numerical values</span> in <span class="yellow">cells A2 to C5</span></p>
+          </code>
+          <br />
+          <code>
+            <span class="bold">=</span><span class="yellow">MAX</span><span class="green">(C1:C10)</span><p><span class="bold">Outputs</span> the <span class="green">maximum/highest value found</span> in <span class="yellow">cells C1 to C10</span></p>
+          </code>
+        </div>
+      </section>
+      <section class="main-section" id="Sorting">
+        <header>Sorting</header>
+        <p>One of the best features of <span class="green">Excel</span> is that you can manage information efficiently by <span class="yellow">sorting</span> your data alphabetically, numerically, and in many other ways.
+</p>
+        <ol class="list-elements">
+          <li><span class="green">Sort Sheet</span><p>Sorts all data in your worksheet by one column. Related information is kept together when sorted.</p></li>
+          <li><span class="yellow">Sort Range</span><p>Sorts the data in a range of cells, especially helpful when working with a sheet that contains several tables. Only the contents of the specified table will be sorted.</p></li>
+        </ol>
+      </section>
+      <section class="main-section" id="Charts">
+        <header>Charts</header>
+        <p>A <span class="yellow">chart</span> is a graphical representation of your workbook data which makes it easier to visualize comparisons and trends.
+</p>
+        <ol class="list-elements">
+          <li><span class="green">Column</span><p>Uses vertical bars to represent data. Most frequently used for comparing information.</p></li>
+          <li><span class="yellow">Line</span><p>Ideal for showing trends. The data points are connected by lines, which makes it easier to see the increase or decrease of value over time.</p></li>
+          <li><span class="green">Pie</span><p>Used to compare proportions. Depicts values that make up a percentage of the whole and are shown as slices of a pie.</p></li>
+          <li><span class="yellow">Area</span><p>Similar to a line chart, except the areas under the lines are shaded.</p></li>
+          <li><span class="green">Surface</span><p>Allows you to display data in 3D landscape. Lets you see a variety of information at the same time. Works best with large data sets.</p></li>
+        </ol>
+      </section>
+      <section class="main-section" id="References">
+        <header>References</header>
+        <p>The contents of the program is based on the book "<span class="yellow">E-tech:</span> <span class="green">technology empowerment in a connected, digital world</span>" <br>Written by <span class="yellow">Melissa P. Juanillo,</span> <span class="green">MIT,</span> and <span class="yellow">Emilita M. Tan,</span> <span class="green">MAET</span><br />Edited by <span class="yellow">Jaime D. L. Caro,</span> <span class="green">Ph.D.</span></p>
+      </section>
+    </main>
+  </body>
+</html>
