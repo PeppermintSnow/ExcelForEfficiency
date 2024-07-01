@@ -1,6 +1,8 @@
 Attribute VB_Name = "UserSatisfaction"
+' Module responsible for handling UserSatisfaction scores.
 Public USQ1, USQ2, USQ3, USQ4, USQ5, USQ6, USQ7, USQ8 As Integer
 
+' Buttons to assign scores in User Satisfaction Questionnaire variables.
 Sub USQR5()
     If CurrentSlide = 305 Then
         USQ1 = 5

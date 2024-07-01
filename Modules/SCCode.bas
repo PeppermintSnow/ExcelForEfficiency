@@ -1,4 +1,7 @@
 Attribute VB_Name = "SCCode"
+' Module responsible for handling events in Sorting and Charts (Aurora).
+
+' Checks if the sample activity has been accomplished.
 Sub ResponseFinishSorting()
     If SampleCheck = True Then
         ActivePresentation.SlideShowWindow.View.Next
@@ -9,6 +12,7 @@ Sub ResponseFinishSorting()
     SampleCheck = False
 End Sub
 
+' Opens the sample activity.
 Sub SampleOpenSorting()
     SampleCheck = True
     
