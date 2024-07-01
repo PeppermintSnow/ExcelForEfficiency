@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="images/head/logo.png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Excel For Efficiency</title>
   </head>
   <body>
@@ -21,13 +22,22 @@
         <a class="nav-link" href="#About"><li>About</li></a>
         <a class="nav-link" href="#Installation"><li>Installation</li></a>
         <fieldset class="divider">
-          <legend>Lessons/Content</legend>
+          <legend>Essential Modules</legend>
         </fieldset>
-        <a class="nav-link" href="#Basics"><li>Basics</li></a>
-        <a class="nav-link" href="#Formulas"><li>Formulas</li></a>
-        <a class="nav-link" href="#Functions"><li>Functions</li></a>
-        <a class="nav-link" href="#Sorting"><li>Sorting</li></a>
-        <a class="nav-link" href="#Charts"><li>Charts</li></a>
+        <a class="nav-link" href="#Checkpoints"><li>Checkpoints</li></a>
+        <a class="nav-link" href="#OFCode"><li>OFCode</li></a>
+        <a class="nav-link" href="#PageDetector"><li>PageDetector</li></a>
+        <a class="nav-link" href="#PostTest"><li>PostTest</li></a>
+        <a class="nav-link" href="#PreTest"><li>PreTest</li></a>
+        <a class="nav-link" href="#SCCode"><li>SCCode</li></a>
+        <a class="nav-link" href="#UploadResults"><li>UploadResults</li></a>
+        <a class="nav-link" href="#UserSatisfaction"><li>UserSatisfaction</li></a>
+        <fieldset class="divider">
+          <legend>Development Modules</legend>
+        </fieldset>
+        <a class="nav-link" href="#FindObjectPosition"><li>FindObjectPosition</li></a>
+        <a class="nav-link" href="#ImportQuestionsFromExcel"><li>ImportQuestions</li></a>
+        <a class="nav-link" href="#RenameShapes"><li>RenameShapes</li></a>
         <fieldset class="divider">
           <legend>References & Credits</legend>
         </fieldset>
@@ -51,25 +61,29 @@ contains features and attributes which help facilitate the learning of the audie
         <p><span class="green">Excel</span> <span class="yellow">For Efficiency!</span> is developed in PowerPoint with the use of Visual Basic Macros.</p>
         <p>Listed below are the steps for installation:</p>
         <ol>
-          <li>Download from the <a id="download-link" href="https://peppermintsnow.github.io/ExcelForEfficiency/download.html">links in the website</a></li>
-            <p class="installation-steps">Select your chosen version (i.e. Full Version or Demo Version) from the download links provided in the website. Simply, click on the button and download.</p>
+          <li>Download from the <a class="download-link" href="https://github.com/PeppermintSnow/ExcelForEfficiency/releases" target="_blank">Github Releases</a> or <a class="download-link" href="https://github.com/PeppermintSnow/ExcelForEfficiency/releases/download/v0.1.0-alpha/ExcelForEfficiency.v.0.1.0-alpha.zip">Direct Download of v0.1.0</a></li>
+            <p class="installation-steps">Select a from the download links provided. Simply, click on the button and download.</p>
           <li>Extract the files and run "unblock.bat"</li>
             <p class="installation-steps">By default, Microsoft disables the functions of "macros" or the codes within the PowerPoint presentation. By running "unblock.bat", the files are given the necessary permissions to function properly.</p>
           <li>Run "ExcelForEfficiency.pptm"</li>
             <p class="installation-steps">In case a prompt appears saying "Macros has been disabled", simply click on the "Enable" button. Without macros, the program would have no functionality.</p>
         </ol>
       </section>
-      <section class="main-section" id="Basics">
-        <header>Basics</header>
+      <fieldset class="main-divider"><legend>Modules</legend></fieldset>
+      <section class="main-section" id="Checkpoints">
+        <header>Checkpoints.bas</header>
         <p>The spreadsheet interface consists of 5 elements, namely,</p>
-        <ol class="list-elements">
-          <li><span class="green">Name box</span><p>It displays the cell reference or the name of the active cell.</p>
-          <li><span class="yellow">Formula bar</span><p>It can be used for entering and editing data formulas. It also actively displays the content of the active cell.</p>
-          <li><span class="green">Sheet tabs</span><p> It tells what is the name of the worksheet you’re currently working with. You can also change to different worksheets by clicking the worksheet file beside it.</p>
-          <li><span class="yellow">Row numbers</span><p>It runs vertically in a worksheet and is identified by a number in the row header.</p>
-          <li><span class="green">Column letters</span><p>It runs horizontally in a worksheet and is identified by a number in the column header.</p>
-</li>
-        </ol>
+        <code class="source-code" id="checkpoints-code"></code>
+          <code>
+            <span class="yellow">PEM</span><span class="green">DAS</span> wherein: <br /> <br />
+            <span class="yellow">P</span>arenthesis<br />
+            <span class="yellow">E</span>xponent<br />
+            <span class="yellow">M</span>ultiplication<br />
+            <span class="green">D</span>ivision<br />
+            <span class="green">A</span>ddition<br />
+            <span class="green">S</span>ubtraction<br />
+          </code>
+        </div>
       </section>
       <section class="main-section" id="Formulas">
         <header>Formulas</header>
@@ -169,5 +183,6 @@ contains features and attributes which help facilitate the learning of the audie
         <p>The contents of the program is based on the book "<span class="yellow">E-tech:</span> <span class="green">technology empowerment in a connected, digital world</span>" <br>Written by <span class="yellow">Melissa P. Juanillo,</span> <span class="green">MIT,</span> and <span class="yellow">Emilita M. Tan,</span> <span class="green">MAET</span><br />Edited by <span class="yellow">Jaime D. L. Caro,</span> <span class="green">Ph.D.</span></p>
       </section>
     </main>
+    <script src="loadSrcCode.js"></script>
   </body>
 </html>

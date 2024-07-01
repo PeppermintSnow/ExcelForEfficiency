@@ -1,5 +1,16 @@
+@import url('https://cdn.rawgit.com/lonekorean/gist-syntax-themes/d49b91b3/stylesheets/one-dark.css');
+
+:root {
+  --background: #292051aa;
+  --text: #c5b4e3;
+  --green: #6bbe5a;
+  --yellow: #ffd966;
+  --hover: #292051;
+  --background2: #1c1638;
+}
+
 * {
-  box-sizing: border-size;
+  box-sizing: border-box;
 }
 
 html {
@@ -9,7 +20,7 @@ html {
 body {
   background: url("images/bg/bg.jpg") #00000075 fixed;
   background-blend-mode: darken;
-  color: #C5B4E3;
+  color: var(--text);
   overflow-x: hidden;
 }
 
@@ -18,7 +29,7 @@ body {
   position: fixed;
   width: 275px;
   height: 100vh;
-  background-color: #292051aa;
+  background-color: var(--background);
   border-radius: 25px;
   font-family: "Comic Neue", sans-serif;
   font-weight: bold;
@@ -50,18 +61,18 @@ body {
   margin: auto;
   margin-left: 5px;
   margin-top: 5px;
-  background-color: #1c1638;
+  background-color: var(--background2);
   border-radius: 100px;
   transition: 0.3s ease-in-out;
 }
 
 #logo-link:hover {
-  background-color: #292051;
-  box-shadow: 0 0 10px #ffd966;
+  background-color: var(--hover);
+  box-shadow: 0 0 10px var(--yellow);
   transition: 0.3s ease-in-out;
 }
 
-.divider {
+.divider, .main-divider {
   width: 90%; 
   margin: 20px 0 0;
   text-align: center;
@@ -72,7 +83,11 @@ body {
   border-left: none;
 }
 
-.divider legend {
+.main-divider {
+  width: 96%;
+}
+
+.divider legend, .main-divider legend {
   width: auto;
   margin-left: auto;
   margin-right: auto;
@@ -90,19 +105,19 @@ body {
   font-size: 1.5rem;
   padding: 10px;
   margin: 2px 3px;
-  background-color: #1c1638;
+  background-color: var(--background2);
   border-radius: 10px;
   transition: 0.3s ease-in-out;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #C5B4E3;
+  color: var(--text);
 }
 
 #navbar ul li:hover {
-  background-color: #292051;
-  color: #ffd966;
+  background-color: var(--hover);
+  color: var(--yellow);
   text-shadow: 0 0 10px;
   transition: 0.3s ease-in-out;
 }
@@ -114,7 +129,7 @@ body {
   max-width: 1110px;
   padding: 10px;
   padding-left: 25px;
-  background-color: #292051aa;
+  background-color: var(--background);
   border-radius: 25px;
   font-family: "Comic Neue", sans-serif;
 }
@@ -122,7 +137,7 @@ body {
 .main-section header {
   font-size: 2em;
   text-shadow: 0 0 10px;
-  color: #ffd966;
+  color: var(--yellow);
   font-weight: bold;
 }
 
@@ -150,7 +165,7 @@ body {
   counter-increment: item;
   width: 3em;
   margin-left: -2em;
-  color: #ffd966;
+  color: var(--yellow);
   font-weight: bold;
   text-shadow: 0 0 10px;
 } 
@@ -159,13 +174,13 @@ body {
   margin-left: 3em;
 }
 
-#download-link {
-  color: #6bbe5a;
+.download-link {
+  color: var(--green);
   transition: 0.3s ease-in-out;
 }
 
-#download-link:hover {
-  color: #ffd966;
+.download-link:hover {
+  color: var(--yellow);
   text-shadow: 0 0 10px;
   transition: 0.3s ease-in-out;
 }
@@ -185,7 +200,7 @@ body {
 
 .code-container {
   font-family: monospace;
-  background-color: #1c1638;
+  background-color: var(--background2);
   width: 50%;
   padding: 15px;
   border-radius: 10px;
@@ -195,11 +210,21 @@ body {
   font-size: 1em;
 }
 
+.source-code {
+  height: 500px;
+  width: 90%;
+  margin: 5px auto;
+  background-color: var(--background2);
+  color: var(--text);
+  border: none;
+  border-radius: 25px;
+}
 /* Footer Styles */
 
 footer {
   margin: 0;
   position: relative;
+  padding-bottom: 20px;
 }
 
 footer p {
@@ -211,26 +236,26 @@ footer p {
 
 footer a {
   font-weight: bold;
-  color: #C5B4E3;
+  color: var(--text);
   transition: 0.3s ease-in-out;
 }
 
 footer a:hover {
   font-weight: bold;
-  color: #ffd966;
+  color: var(--yellow);
   transition: 0.3s ease-in-out;
   text-shadow: 0 0 10px;
 }
 /* Text-specific Styles */
 .yellow {
-  color: #ffd966;
+  color: var(--yellow);
 }
 
 .bold {
   text-shadow: 0 0 10px;
 }
 .green {
-  color: #6bbe5a;
+  color: var(--green);
 }
 
 .yellow, .green, .bold {
