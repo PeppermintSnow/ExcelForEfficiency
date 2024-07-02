@@ -1,5 +1,3 @@
-@import url('https://cdn.rawgit.com/lonekorean/gist-syntax-themes/d49b91b3/stylesheets/one-dark.css');
-
 :root {
   --background: #292051aa;
   --text: #c5b4e3;
@@ -13,6 +11,22 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--background2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hover);
 }
 
 html {
@@ -82,8 +96,8 @@ body {
 }
 
 .divider, .main-divider {
-  width: 90%; 
-  margin: 20px 0 0;
+  width: 100%; 
+  margin: 20px 0;
   text-align: center;
   font-size: 1.2em;
   border-top: 1px solid;
@@ -93,16 +107,18 @@ body {
 }
 
 .main-divider {
-  width: 96%;
+  width: 95%;
 }
 
 .divider legend, .main-divider legend {
   width: auto;
   margin-left: auto;
   margin-right: auto;
-  font-family: monospace;
   font-weight: normal;
 }
+
+.divider legend {font-family: monospace;}
+.main-divider legend {font-family: "Comic Neue", sans-serif;}
 
 #navbar ul {
   list-style: none;
@@ -140,29 +156,26 @@ body {
   font-family: "Comic Neue", sans-serif;
 }
 
-.main-section header {
-  font-size: 2em;
-  text-shadow: 0 0 10px;
-  color: var(--yellow);
-  font-weight: bold;
-}
-
-.main-section p,
-.main-section code,
-.main-section li {
+.main-section p {
   font-size: 1.2em;
+  width: 95%;
+  text-align: justify;
+  margin: 3px 0 10px 0;
 }
 
 #Installation ol {
   counter-reset: item;
   margin-left: 1em;
   padding-left: 0;
+  width: 95%;
 }
 
 #Installation li {
   display: block;
   margin-bottom: .5em;
   margin-left: 2em;
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 #Installation li::before {
@@ -191,35 +204,90 @@ body {
   transition: 0.3s ease-in-out;
 }
 
-.list-elements p {
+.module-header {
+  font-size: 2em;
+  text-shadow: 0 0 10px;
+  color: var(--green);
+  font-weight: bold;
+}
+
+.module-header::after {
+  content: ".bas";
+  color: var(--yellow);
+}
+
+.socials-container {
+  width: 90%;
+  display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.socials-card, .socials-card:active {
+  background-color: var(--background2);
+  padding-top: 10px;
+  border-radius: 25px;
+  transition: 0.3s ease-in-out;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.socials-card:hover {
+  transform: translate(0, -10px);
+  box-shadow: 0 10px var(--background2);
+  background-color: var(--hover);
+  transition: 0.3s ease-in-out;
+}
+
+.socials-tile {
+  height: 100px;
+  width: 30%;
+}
+
+.socials-tile p {
+  text-align: center;
+}
+
+.socials-link-container {
+  width: 100%;
+  height: 50px;
+  display: flex;
+    justify-content: center;
+}
+
+.socials-link {
+  text-decoration: none;
+  height: 30px;
+  font-size: 1.5em;
+}
+
+.socials-icon {
   display: inline;
-  font-size: 1em;
+  width: 30px;
+  margin-right: 10px;
+  float: left;
 }
 
-.list-elements p::before {
-  content: " - ";
-}
-
-.ulist-elements p {
-  margin: 0; ;
-}
-
-#References a {
+.socials-link {
   font-weight: bold;
   color: var(--text);
   transition: 0.3s ease-in-out;
 }
 
-#References a:hover {
+.socials-link:hover {
   font-weight: bold;
-  color: var(--yellow);
   transition: 0.3s ease-in-out;
-  text-shadow: 0 0 10px;
+  text-shadow: 0 0 10px, 0 5px 0 var(--hover);
 }
-/* Footer Styles */
 
+/* Footer Styles */
 footer {
-  margin: 0;
+  margin-top: 10px;
   position: relative;
   padding-bottom: 20px;
 }
@@ -231,18 +299,11 @@ footer p {
   text-align: center;
 }
 
-footer a {
-  font-weight: bold;
-  color: var(--text);
-  transition: 0.3s ease-in-out;
+main footer {
+  width: 90%;
+  padding: 0;
 }
 
-footer a:hover {
-  font-weight: bold;
-  color: var(--yellow);
-  transition: 0.3s ease-in-out;
-  text-shadow: 0 0 10px;
-}
 /* Text-specific Styles */
 .yellow {
   color: var(--yellow);
@@ -258,6 +319,21 @@ footer a:hover {
 .yellow, .green, .bold {
   font-weight: bold;
   text-shadow: 0 0 10px;
+}
+
+.header, .module-header {
+  font-size: 2em;
+  text-shadow: 0 0 10px;
+  font-weight: bold;
+}
+
+.header {
+  color: var(--yellow);
+  margin: 15px 0 0;
+}
+
+.module-header {
+  color: var(--green)
 }
 
 @media (max-width: 768px) {
