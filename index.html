@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="./styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="images/head/logo.png">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Excel For Efficiency</title>
+    <link rel="stylesheet" href="./highlight/github-dark.min.css">
+    <script src="./highlight/highlight.min.js"></script>
   </head>
   <body>
+    <div class="grid-wrapper">
     <nav id="navbar">
       <div class="header-container">
         <a id="logo-link" href=""><img id="logo" src="images/head/logo.png" /></a>
@@ -26,10 +28,10 @@
         </fieldset>
         <a class="nav-link" href="#Checkpoints"><li>Checkpoints</li></a>
         <a class="nav-link" href="#OFCode"><li>OFCode</li></a>
+        <a class="nav-link" href="#SCCode"><li>SCCode</li></a>
         <a class="nav-link" href="#PageDetector"><li>PageDetector</li></a>
         <a class="nav-link" href="#PostTest"><li>PostTest</li></a>
         <a class="nav-link" href="#PreTest"><li>PreTest</li></a>
-        <a class="nav-link" href="#SCCode"><li>SCCode</li></a>
         <a class="nav-link" href="#UploadResults"><li>UploadResults</li></a>
         <a class="nav-link" href="#UserSatisfaction"><li>UserSatisfaction</li></a>
         <fieldset class="divider">
@@ -69,120 +71,1686 @@ contains features and attributes which help facilitate the learning of the audie
             <p class="installation-steps">In case a prompt appears saying "Macros has been disabled", simply click on the "Enable" button. Without macros, the program would have no functionality.</p>
         </ol>
       </section>
-      <fieldset class="main-divider"><legend>Modules</legend></fieldset>
+      <fieldset class="main-divider"><legend>Essential Modules</legend></fieldset>
       <section class="main-section" id="Checkpoints">
-        <header>Checkpoints.bas</header>
-        <p>The spreadsheet interface consists of 5 elements, namely,</p>
-        <code class="source-code" id="checkpoints-code"></code>
-          <code>
-            <span class="yellow">PEM</span><span class="green">DAS</span> wherein: <br /> <br />
-            <span class="yellow">P</span>arenthesis<br />
-            <span class="yellow">E</span>xponent<br />
-            <span class="yellow">M</span>ultiplication<br />
-            <span class="green">D</span>ivision<br />
-            <span class="green">A</span>ddition<br />
-            <span class="green">S</span>ubtraction<br />
+        <header class="module-header">Checkpoints</header>
+        <p>This module is responsible for handling the timings, the order of events and exactly when they should be triggered. This module also determines exactly when the user may access a certain part of the program.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "Checkpoints"
+  ' Module for checkpoints; responsible for triggering and controlling certain events within the program.
+  
+  ' Declare global/public boolean variables for checking if a certain point is reached
+  Public CheckpointPrologueKeyResponse, CheckpointPretest, _
+          CheckpointXenoluminaFV, CheckpointXenoluminaL1, CheckpointXenoluminaL2, CheckpointXenoluminaL3, CheckpointXenoluminaL4, CheckpointXenoluminaComplete, _
+          CheckpointAuroraFV, CheckpointAuroraL1, CheckpointAuroraL2, CheckpointAuroraComplete, _
+          CheckpointTenebrisAttack, _
+          SampleCheck _
+  As Boolean
+  
+  ' Initializes the boolean variables.
+  ' Checkpoint_FV checks if it is the first time the user visits the planet; FV = First Visit.
+  ' Checkpoint_L# checks if the user has finished taking the lesson number; L1 = Lesson 1.
+  ' Checkpoint_Complete checks if the user has finished all available lessons in the planet.
+  Sub InitializeCheckpoints()
+      CheckpointPrologueKeyResponse = False
+      CheckpointPretest = False
+      CheckpointXenoluminaFV = True
+      CheckpointXenoluminaL1 = False
+      CheckpointXenoluminaL2 = False
+      CheckpointXenoluminaL3 = False
+      CheckpointXenoluminaL4 = False
+      CheckpointXenoluminaComplete = False
+      CheckpointAuroraFV = True
+      CheckpointAuroraL1 = False
+      CheckpointAuroraL2 = False
+      CheckpointAuroraComplete = False
+      CheckpointTenebrisAttack = False
+  
+      ' Call PrologueProceed
+      PrologueProceed
+  End Sub
+  
+  ' Checks if the user has taken the key dialogue in the intro.
+  Sub PrologueProceed()
+      If CheckpointPrologueKeyResponse = True Then
+          ActivePresentation.Slides(19).Shapes("!!Response4").Visible = msoTrue
+      Else
+          ActivePresentation.Slides(19).Shapes("!!Response4").Visible = msoFalse
+      End If
+  End Sub
+  
+  ' Sets the dialogue key to true once the user has selected the key dialogue.
+  Sub PrologueKey()
+      CheckpointPrologueKeyResponse = True
+      ActivePresentation.SlideShowWindow.View.GotoSlide 24
+      PrologueProceed
+  End Sub
+  
+  ' Sets the pretest checkpoint to true.
+  Sub ButtonPreTest()
+      CheckpointPretest = True
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Handles the early-game dialogues in Tenebris.
+  Sub TenebrisAsk()
+      If CheckpointXenoluminaL1 = False Then
+          ActivePresentation.SlideShowWindow.View.GotoSlide 257
+      ElseIf CheckpointXenoluminaL1 = True And CheckpointXenoluminaComplete = False Then
+          ActivePresentation.SlideShowWindow.View.GotoSlide 258
+      ElseIf CheckpointXenoluminaComplete = True Then
+          ActivePresentation.SlideShowWindow.View.GotoSlide 259
+      End If
+  End Sub
+  
+  ' Handles the user's first visit in Xenolumina.
+  Sub XenoluminaFV()
+      If CheckpointXenoluminaFV = True Then
+          ActivePresentation.SlideShowWindow.View.GotoSlide SlideXenoluminaFV
+      ElseIf CheckpointXenoluminaFV = False Then
+          ActivePresentation.SlideShowWindow.View.GotoSlide (SlideXenoluminaMenu + 1)
+      End If
+  End Sub
+  
+  ' Sets Xenolumina's first visit checkpoint to false.
+  Sub ButtonXenoluminaFV() 'Slide 93
+      CheckpointXenoluminaFV = False
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Sets Xenolumina's Lesson 1 checkpoint to true.
+  Sub ButtonXenoluminaL1() 'Slide 107
+      CheckpointXenoluminaL1 = True
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Sets Xenolumina's Lesson 2 checkpoint to true.
+  Sub ButtonXenoluminaL2() 'Slide 122
+      CheckpointXenoluminaL2 = True
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Sets Xenolumina's Lesson 3 checkpoint to true.
+  Sub ButtonXenoluminaL3() 'Slide 138
+      CheckpointXenoluminaL3 = True
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Sets Xenolumina's Lesson 4 checkpoint to true.
+  Sub ButtonXenoluminaL4() 'Slide 149
+      CheckpointXenoluminaL4 = True
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Handles the user's first visit in Aurora.
+  Sub ButtonAuroraFV()
+      CheckpointAuroraFV = False
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Sets Aurora's Lesson 1 checkpoint to true.
+  Sub ButtonAuroraL1() 'Slide 215
+      CheckpointAuroraL1 = True
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Sets Aurora's Lesson 1 checkpoint to true.
+  Sub ButtonAuroraL2() 'Slide 227
+      CheckpointAuroraL2 = True
+      ActivePresentation.SlideShowWindow.View.Next
+  End Sub
+  
+  ' Subroutines for quick fixes and debugging in case of errors.
+  Private Sub CodeQuickFix()
+      CheckpointPretest = True
+      CheckpointXenoluminaComplete = True
+      CheckpointAuroraFV = True
+      Debug.Print CheckpointXenoluminaComplete
+  End Sub
+  
+  Private Sub CodeDebug()
+      Debug.Print CheckpointXenoluminaComplete
+      Debug.Print CheckpointAuroraFV
+  End Sub
           </code>
-        </div>
+        </pre>
       </section>
-      <section class="main-section" id="Formulas">
-        <header>Formulas</header>
-        <p><span class="green">Excel</span> uses standard operators for formulas.</p>
-        <ul class="ulist-elements">
-        <li><p><span class="yellow">Plus sign</span> <span class="green">(+)</span> for addition</p></li>
-        <li><p><span class="yellow">Minus sign</span> <span class="green">(-)</span> for subtraction</p></li>
-        <li><p><span class="yellow">Asterisk</span> <span class="green">(*)</span> for multiplication</p></li>
-        <li><p><span class="yellow">Forward slash</span> <span class="green">(/)</span> for division</p></li>
-        <li><p><span class="yellow">Caret</span> <span class="green">(^)</span> for exponents</p></li>
-        </ul>
-        <p>An <span class="yellow">equals sign</span> <span class="green">(=)</span> is used to start a formula. A complex formula will follow the <span class="yellow">PEM</span><span class="green">DAS</span> order.
-</p>
-        <div class="code-container">
-          <code>
-            <span class="yellow">PEM</span><span class="green">DAS</span> wherein: <br /> <br />
-            <span class="yellow">P</span>arenthesis<br />
-            <span class="yellow">E</span>xponent<br />
-            <span class="yellow">M</span>ultiplication<br />
-            <span class="green">D</span>ivision<br />
-            <span class="green">A</span>ddition<br />
-            <span class="green">S</span>ubtraction<br />
+
+      <section class="main-section" id="OFCode">
+        <header class="module-header">OFCode</header>
+        <p>The "OF" in OFCode stands for Operations & Functions, which is the topic of the first planet, Xenolumina. This module handles the events and features of Xenolumina, such as its lessons, the menu, as well as the sample workbooks.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "OFCode"
+' Module responsible for handling events in the Operations and Functions section (Xenolumina).
+
+' Sets Checkpoint of Xenolumina's intro to true.
+Sub TickCheckpointOFIntro()
+    CheckpointOFIntro = True
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+' Checks if the intro has been played.
+Sub PlanetEntrance()
+    If CheckpointOFIntro = False Then
+        ActivePresentation.SlideShowWindow.View.Next
+    Else
+        ActivePresentation.SlideShowWindow.View.GotoSlide SlideOFMenu
+End Sub
+
+' Checks if the user has accomplished the Operations activity.
+Sub ResponseFinishOFO()
+    ' Allows the user to proceed if the sample activity variable is set to true, otherwise, displays an error message.
+    If SampleCheck = True Then
+        ActivePresentation.SlideShowWindow.View.Next
+    Else
+        MsgBox "You have not yet accomplished the task; please go back to the sample worksheet and finish the task.", vbExclamation, ":<"
+    End If
+    
+    ' Reset the sample activity variable to false for future use.
+    SampleCheck = False
+End Sub
+
+' Checks if the user has accomplished the Functions activity.
+Sub ResponseFinishOFF()
+    ' Allows the user to proceed if the sample activity variable is set to true, otherwise, displays an error message.
+    If SampleCheck = True Then
+        ActivePresentation.SlideShowWindow.View.Next
+    Else
+        MsgBox "You have not yet accomplished the task; please go back to the sample worksheet and finish the task.", vbExclamation, ":<"
+    End If
+    
+    ' Reset the sample activity variable to false for future use.
+    SampleCheck = False
+End Sub
+
+' Opens the sample workbook activity for Operations.
+Sub SampleOpenOFO()
+    ' Set sample activity variable to true upon launch.
+    SampleCheck = True
+    
+    ' Declare variables for opening the workbook.
+    Dim xlsApp As Object
+    Set xlsApp = CreateObject("Excel.Application")
+    
+    Dim xlsWB As Object
+    Set xlsWB = xlsApp.Workbooks.Open(ActivePresentation.Path & "\SampleOperations.xlsm")
+    
+    ' Makes the Excel workbook visible.
+    xlsApp.Visible = True
+    
+    ' Resets the variables to avoid conflicts.
+    Set xlsApp = Nothing
+    Set xlsWB = Nothing
+End Sub
+
+' Opens the sample workbook activity for Operations.
+Sub SampleOpenOFF()
+    ' Set sample activity variable to true upon launch.
+    SampleCheck = True
+    
+    ' Declare variables for opening the workbook.
+    Dim xlsApp As Object
+    Set xlsApp = CreateObject("Excel.Application")
+    
+    Dim xlsWB As Object
+    Set xlsWB = xlsApp.Workbooks.Open(ActivePresentation.Path & "\SampleFunctions.xlsm")
+    
+    ' Makes the Excel workbook visible.
+    xlsApp.Visible = True
+    
+    ' Resets the variables to avoid conflicts.
+    Set xlsApp = Nothing
+    Set xlsWB = Nothing
+End Sub
+
+' Closes the Excel workbook. (Unused)
+Sub ExcelClose()
+    Dim xlsApp As Object
+    Set xlsApp = CreateObject("Excel.Application")
+    
+    Dim xlsWB As Object
+    Set xlsWB = xlsApp.Workbooks.Open(ActivePresentation.Path & "\OperationsSample.xlsm")
+    
+    xlsWB.Close False
+    xlsApp.Quit
+    
+    Set xlsApp = Nothing
+    Set xlsWB = Nothing
+End Sub
+
+' Handles the textbox activity for slide 196.
+Sub ButtonIFGo()
+    ' Declare variable for checking the string.
+    Dim UserInput As String
+    UserInput = Slide196.UserInput.Value
+
+    ' Checks if the user's string contains "Average"
+    If InStr(1, UserInput, "Average", vbTextCompare) Then
+        Slide196.UserInput.Value = ""
+        ActivePresentation.SlideShowWindow.View.Next
+    Else
+        MsgBox "Please type [Average] on the textbox.", vbExclamation, "Error!"
+    End If
+End Sub
+
+' Handles the textbox activity for slide 199. 
+Sub ButtonIFGo2()
+    ' Declare variable for checking the string.
+    Dim UserInput As String
+    UserInput = Slide199.UserInput.Value
+
+    ' Checks if the user's string contains "B1:B4"
+    If UserInput = "B1:B4" Then
+        Slide199.UserInput.Value = ""
+        ActivePresentation.SlideShowWindow.View.Next
+    Else
+        MsgBox "Please type [B1:B4] on the textbox.", vbExclamation, "Error!"
+    End If
+End Sub
           </code>
-        </div>
-        <p><span  class="green">Excel</span> has a feature that allows you to calculate values from specific cell addresses.</p>
-        <p><span class="yellow">Cell addresses</span> are a combination of a column letter and a row number. When incorporated in a formula, these are known as a cell reference. Utilizing cell references will make formulas more accurate.</p>
+        </pre>
       </section>
-      <section class="main-section" id="Functions">
-        <header>Functions</header>
-        <p>A <span class="yellow">function</span> is a predefined formula in <span class="green">Excel</span> which performs calculations for a specific value using cell references.</p>
-        <div class="code-container">
-          <code> <span class="bold">=</span><span class="yellow">SUM</span><span class="green">(A1:A5)</span></code>
-        </div>
-        <p>A function consists of the <span class="bold">equals sign (=)</span>, the <span class="yellow">function name</span>, and <span class="green">one or more arguments</span>. An argument is a range of cell addresses or any input that you provide to a function.
-</p>
-        <p>A few of the most commonly used functions are listed below:</p>
-        <ol class="list-elements">
-          <li>
-            <span class="green">SUM</span>
-            <p>adds all values of cells in the argument.</p>
-          </li>
-          <li>
-            <span class="yellow">AVERAGE</span>
-            <p>gets the average of all the values of cells in the argument.</p>
-          </li>
-          <li>
-            <span class="green">COUNT</span>
-            <p>counts the number of cells with numerical data in the argument.</p>
-          </li>
-          <li>
-            <span class="yellow">MAX</span>
-            <p>gets the highest cell value included in the argument.</p>
-          </li>
-          <li>
-            <span class="green">MIN</span>
-            <p>gets the lowest cell value included in the argument.</p>
-            </li>
-        </ol>
-        <p>Here are some example scenarios wherein you might make use of some of the functions:</p>
-        <div class="code-container">
-          <code>
-            <span class="bold">=</span><span class="yellow">AVERAGE</span><span class="green">(B2:F2)</span><p><span class="bold">Outputs</span> the <span class="green">average of all values</span> in <span class="yellow">cells B2 to F2</span></p>
+
+      <section class="main-section" id="SCCode">
+        <header class="module-header">SCCode</header>
+        <p>Similar to OFCode, the "SC" in SCCode stands for Sorting & Charts, which is the topic of the second planet, Aurora. Like the previous module, this module handles the events and features of Aurora.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "SCCode"
+' Module responsible for handling events in Sorting and Charts (Aurora).
+
+' Checks if the sample activity has been accomplished.
+Sub ResponseFinishSorting()
+    If SampleCheck = True Then
+        ActivePresentation.SlideShowWindow.View.Next
+    Else
+        MsgBox "You have not yet accomplished the task; please go back to the sample worksheet and finish the task.", vbExclamation, ":<"
+    End If
+    
+    SampleCheck = False
+End Sub
+
+' Opens the sample activity.
+Sub SampleOpenSorting()
+    SampleCheck = True
+    
+    Dim xlsApp As Object
+    Set xlsApp = CreateObject("Excel.Application")
+    
+    Dim xlsWB As Object
+    Set xlsWB = xlsApp.Workbooks.Open(ActivePresentation.Path & "\SampleSorting.xlsm")
+    
+    xlsApp.Visible = True
+    
+    Set xlsApp = Nothing
+    Set xlsWB = Nothing
+End Sub
           </code>
-          <br />
-          <code>
-            <span class="bold">=</span><span class="yellow">COUNT</span><span class="green">(A2:C5)</span><p><span class="bold">Outputs</span> the <span class="green">number of all numerical values</span> in <span class="yellow">cells A2 to C5</span></p>
+        </pre>
+      </section>
+
+      <section class="main-section" id="PageDetector">
+        <header class="module-header">PageDetector</header>
+        <p>This module is responsible for keeping track of where the user currently is at the program. It runs a set of conditionals which triggers blocks of codes when a user reaches certain slides. The block of codes ran either redirects the user to a slide for a smooth experience, or checks the requirements and allows the user to continue on with their journey.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "PageDetector"
+' Module responsible for detecting the pages and handling other events.
+
+' Declare variables for the posttest attack animation.
+Dim LastQuestion As Long
+Dim Question As Integer
+
+' Declare a public variable for detectin the current slide.
+Public CurrentSlide As Integer
+
+' Declare public variables to easily adjust the slide number of important slides
+Public Const SlideXenoluminaTransition As Integer = 74
+Public Const SlidePreResults As Integer = 52
+    Public Const SlidePreFQ As Integer = 35
+    Public Const SlidePreLQ As Integer = 49
+Public Const SlideXenoluminaLessonMenu As Integer = 154
+    Public Const SlideOFTransition As Integer = 33
+    Public Const SlideOFBLast As Integer = 47
+    Public Const SlideOFOLast As Integer = 62
+    Public Const SlideOFFLast As Integer = 78
+    Public Const SlideOFIFLast As Integer = 89
+Public Const SlidePostResults As Integer = 296
+    Public Const SlidePostFQ As Integer = 262
+    Public Const SlidePostLQ As Integer = 276
+    Public Const SlidePostLast As Integer = 294
+Public Const SlideFinalResults As Integer = 318
+Public Const SlideXenoluminaFV = 75
+Public Const SlideXenoluminaMenu = 159
+Public Const SlideAuroraEV = 188
+Public Const SlideAuroraFV = 173
+Public Const SlideAuroraMenu = 230
+Public Const SlideTenebrisEV = 247
+Public Const SlideTenebrisWarning = 245
+Public Const SlideTenebrisBattle = 261
+
+' Detects slide number.
+Sub OnSlideShowPageChange()
+    ' Sets the CurrentSlide variable as the number of the current slide.
+    CurrentSlide = ActivePresentation.SlideShowWindow.View.CurrentShowPosition
+    
+    ' Initializes the pretest and Xenolumina.
+    If CurrentSlide = 3 Then 'Menu screen slide
+        ' Calls the Initialize subroutine from the PreTest module.
+        PreTest.Initialize
+        ' Initializes the checkpoints for pretest and Xenolumina
+        CheckpointPretest = False
+        CheckpointOFIntro = False
+        CheckpointOFOSample = False
+        
+    ' Initializes the posttest.
+    ElseIf CurrentSlide = 84 Then 'Assessment loading screen slide
+        ' Calls the Initialize subroutine from the PostTest module.
+        PostTest.Initialize
+        ' Initializes the Question variable for the posttest attack animation.
+        Question = 0
+
+    ' Runs a conditional statement to check if Xenolumina's first visit is true.
+    ElseIf CurrentSlide = 74 Then
+        If CheckpointXenoluminaFV = False Then
+            ActivePresentation.SlideShowWindow.View.GotoSlide 158
+        Else
+        End If
+    
+    ' Redirects the next slide for a smooth transition.
+    ElseIf CurrentSlide = 157 Then
+        ActivePresentation.SlideShowWindow.View.GotoSlide SlideXenoluminaMenu
+    
+    ' Checks if all lessons in Xenolumina is completed everytime the user visits the menu.c
+    ElseIf CurrentSlide = 109 Or CurrentSlide = 124 Or CurrentSlide = 140 Or CurrentSlide = 151 Or CurrentSlide = 154 Then 
+        ' Runs another conditional statement if the Complete variable is false.
+        If CheckpointXenoluminaComplete = False Then
+            ' Assigns the Complete variable to true if all four lessons are completed.
+            If CheckpointXenoluminaL1 = True And CheckpointXenoluminaL2 = True And CheckpointXenoluminaL3 = True And CheckpointXenoluminaL4 = True Then
+                CheckpointXenoluminaComplete = True
+                ActivePresentation.SlideShowWindow.View.GotoSlide 155
+            ' Else it does nothing.
+            Else
+                CheckpointXenoluminaComplete = False
+            End If
+        Else
+        End If
+        
+    ' Plays Aurora's dialogue if all prerequisite requirements are met. 
+    ElseIf CurrentSlide = 172 Then 
+        ' If First Visit is true, run another conditional statement.
+        If CheckpointAuroraFV = True Then
+            If CheckpointXenoluminaComplete = True Then
+                ActivePresentation.SlideShowWindow.View.GotoSlide 173
+            Else
+                ActivePresentation.SlideShowWindow.View.GotoSlide 188
+            End If
+        ' Else, check if Xenolumina's Complete variable is true, then run another conditional statement.
+        Else
+            If CheckpointXenoluminaComplete = True Then
+                ActivePresentation.SlideShowWindow.View.GotoSlide 173
+            Else
+                ActivePresentation.SlideShowWindow.View.GotoSlide 188
+            End If
+        End If
+        
+    ' If Aurora's First Visit is false, check if Xenolumina's Complete variable is true, then redirect the user.
+    ElseIf CurrentSlide = 173 Then
+        If CheckpointAuroraFV = False Then
+            If CheckpointXenoluminaComplete = True Then
+            ActivePresentation.SlideShowWindow.View.GotoSlide 234
+            Else
+            End If
+        Else
+        End If
+        
+    ' Redirects the next slide for a smooth transition.
+    ElseIf CurrentSlide = 185 Then
+        ActivePresentation.SlideShowWindow.View.GotoSlide 195
+        
+    ' Checks if all lessons in Aurora is completed everytime the user visits the menu.
+    ElseIf CurrentSlide = 196 Or CurrentSlide = 219 Or CurrentSlide = 231 Then
+        ' If Aurora's Complete variable is false, check if all lessons are set to true; then set to true.
+        If CheckpointAuroraComplete = False Then
+            If CheckpointAuroraL1 = True And CheckpointAuroraL2 = True Then
+                CheckpointAuroraComplete = True
+                ActivePresentation.SlideShowWindow.View.GotoSlide 197
+            ' Otherwise, do nothing.
+            Else
+                CheckpointAuroraComplete = False
+            End If
+        End If
+    
+    ' Redirects the next slide for a smooth transition.
+    ElseIf CurrentSlide = 201 Then
+        ActivePresentation.SlideShowWindow.View.GotoSlide 194
+    
+    ' Redirects the next slide for a smooth transition.
+    ElseIf CurrentSlide = 242 Then
+        ActivePresentation.SlideShowWindow.View.GotoSlide 244
+
+    ' Checks if Aurora is completed everytime the user visits the planets menu.
+    ElseIf CurrentSlide = 72 Or CurrentSlide = 170 Or CurrentSlide = 245 Then
+        ' Set Tenebris' Attack checkpoint to true if Aurora is complete.
+        If CheckpointTenebrisAttack = False Then
+            If CheckpointAuroraComplete = True Then
+                CheckpointTenebrisAttack = True
+                ActivePresentation.SlideShowWindow.View.GotoSlide 246
+            ' Otherwise, do nothing.
+            Else
+                CheckpointTenebrisAttack = False
+            End If
+        End If
+    
+    ' Sets the warning label to true if Tenebris' Attack variable is true.
+    ElseIf CurrentSlide = 248 Then
+        If CheckpointTenebrisAttack = True Then
+            ActivePresentation.Slides(248).Shapes("!!LabelWarning").Visible = msoTrue
+        Else
+            ActivePresentation.Slides(248).Shapes("!!LabelWarning").Visible = msoFalse
+        End If
+            
+    ' Redirects the user to the appropriate slide corresponding to their current progress.
+    ElseIf CurrentSlide = 249 Then
+        If CheckpointTenebrisAttack = True Then
+            ActivePresentation.SlideShowWindow.View.GotoSlide 260
+        Else
+            ActivePresentation.SlideShowWindow.View.GotoSlide 250
+        End If
+        
+    ' Calls the CorrectAnswer subroutine from the PostTest module when reaching a certain slide.
+    ElseIf CurrentSlide = 281 Then
+        PostTest.CorrectAnswer
+        
+    ' Calls the PostTestFinish subroutine when reaching a certain slide.
+    ElseIf CurrentSlide = 277 Or CurrentSlide = 285 Then
+        PostTestFinish
+        
+    ' Responsible for running the posttest properly.
+    ElseIf CurrentSlide = 284 Or CurrentSlide = 290 Then
+        ' Once the animation is finished playing, return to the next question.
+        ReturnToNextQuestion
+        ' Sets the question variable to correctly redirect the slide number.
+        Question = (Question + 1)
+        ' Calls the PostTestFinish subroutine to check if done.
+        PostTestFinish
+
+    ' Redireccts the next slide for a smooth transition.
+    ElseIf CurrentSlide = 291 Or CurrentSlide = 293 Then
+        ActivePresentation.SlideShowWindow.View.GotoSlide 294
+    
+    ' Calls the ResultAssessment subroutine to calculate the results.
+    ElseIf CurrentSlide = 317 Then
+        ResultAssessment
+    End If
+        
+    
+End Sub
+
+' Calculates results.
+Sub ResultAssessment()
+    ' Declare variables for displaying results.
+    Dim INCorDEC As String
+    Dim Percentage
+    Set PreGrade = ActivePresentation.Slides(SlidePreResults).Shapes("!!VBoxGrade").TextFrame.TextRange
+    Set PostGrade = ActivePresentation.Slides(SlidePostResults).Shapes("!!VBoxGrade").TextFrame.TextRange
+    
+    ' Formula for computing the percentage.
+    Percentage = PostGrade - PreGrade
+    
+    ' Conditional statement to display the appropriate string based on the conditions.
+    If PostGrade > PreGrade Then
+        INCorDEC = "an increase"
+    Else
+        INCorDEC = "a decrease"
+    End If
+    
+    ' Displays the appropriate string for interpretation of results.
+    Set Slide = ActivePresentation.Slides(318)
+    Slide.Shapes("!!BoxInterpretation").TextFrame.TextRange = "By comparing your pre-assessment and post-assessment scores, " & INCorDEC & " by " & Percentage & "% has been observed in your performance. Thank you for using Excel For Efficiency!"
+End Sub
+
+' Initializes all variables.
+Sub InitializeAll()
+    ' Displays the correct color for the start button in the first slide.
+    Set Slide = ActivePresentation.Slides(1)
+    Slide.Shapes("ResponseStart").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    
+    ' Calls several initializing subroutines from different modules.
+    Checkpoints.InitializeCheckpoints
+    PreTest.Initialize
+    PostTest.Initialize
+    ResetResponseColor
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+' Reverts the color of the response buttons to white.
+Sub ResetResponseColor()
+    ' In case the shape is not detected, handle the exception by jumping to HandleError.
+    On Error GoTo HandleError:
+        ' Loop to run in slides 1 to 318.
+        For i = 1 To 318
+            For n = 1 To 5
+                ActivePresentation.Slides(i).Shapes("!!Response" & n).TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+            Next n
+        Next i
+    Exit Sub
+' Handles the errors thrown by resuming next.
+HandleError:
+    Resume Next
+End Sub
+        
+' Changes the color of Response1 to yellow when hovered over.
+Sub ResponseHover1()
+On Error GoTo HandleError
+    Set Slide = ActivePresentation.Slides(CurrentSlide)
+    Slide.Shapes("!!Response1").TextFrame.TextRange.Font.Color.RGB = RGB(255, 217, 102)
+    Slide.Shapes("!!Response2").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response3").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response4").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response5").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Exit Sub
+HandleError:
+    Resume Next
+End Sub
+
+' Changes the color of Response2 to yellow when hovered over.
+Sub ResponseHover2()
+On Error GoTo HandleError
+    Set Slide = ActivePresentation.Slides(CurrentSlide)
+    Slide.Shapes("!!Response1").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response2").TextFrame.TextRange.Font.Color.RGB = RGB(255, 217, 102)
+    Slide.Shapes("!!Response3").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response4").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response5").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Exit Sub
+HandleError:
+    Resume Next
+End Sub
+
+' Changes the color of Response3 to yellow when hovered over.
+Sub ResponseHover3()
+On Error GoTo HandleError
+    Set Slide = ActivePresentation.Slides(CurrentSlide)
+    Slide.Shapes("!!Response1").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response2").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response3").TextFrame.TextRange.Font.Color.RGB = RGB(255, 217, 102)
+    Slide.Shapes("!!Response4").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response5").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Exit Sub
+HandleError:
+    Resume Next
+End Sub
+
+' Changes the color of Response4 to yellow when hovered over.
+Sub ResponseHover4()
+On Error GoTo HandleError
+    Set Slide = ActivePresentation.Slides(CurrentSlide)
+    Slide.Shapes("!!Response1").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response2").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response3").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response4").TextFrame.TextRange.Font.Color.RGB = RGB(255, 217, 102)
+    Slide.Shapes("!!Response5").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+End Sub
+
+' Changes the color of Response5 to yellow when hovered over.
+Sub ResponseHover5()
+On Error GoTo HandleError
+    Set Slide = ActivePresentation.Slides(CurrentSlide)
+    Slide.Shapes("!!Response1").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response2").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response3").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response4").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Slide.Shapes("!!Response5").TextFrame.TextRange.Font.Color.RGB = RGB(255, 217, 102)
+    Exit Sub
+HandleError:
+    Resume Next
+End Sub
+
+' Resets the color of Response buttons to white.
+Sub ResponseHoverFalse()
+    On Error GoTo HandleError
+        Set Slide = ActivePresentation.Slides(CurrentSlide)
+        Slide.Shapes("!!Response1").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+        Slide.Shapes("!!Response2").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+        Slide.Shapes("!!Response3").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+        Slide.Shapes("!!Response4").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+        Slide.Shapes("!!Response5").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+    Exit Sub
+HandleError:
+    Resume Next
+End Sub
+
+' Stores the correct index for the LastQuestion variable, then redirects to the player attack animation. 
+Sub CorrectRememberLastQuestion()
+    LastQuestion = ActivePresentation.SlideShowWindow.View.Slide.slideIndex
+    ActivePresentation.SlideShowWindow.View.GotoSlide 277 'Bob's first attack frame slide
+End Sub
+
+' Stores the correct index for the LastQuestion variable, then redirects to the boss attack animation. 
+Sub IncorrectRememberLastQuestion()
+    LastQuestion = ActivePresentation.SlideShowWindow.View.Slide.slideIndex
+    ActivePresentation.SlideShowWindow.View.GotoSlide 285 'Boss' first attack frame slide
+    ' Calls the IncorrectAnswer subroutine from the PostTest module to register an incorrect score.
+    PostTest.IncorrectAnswer
+End Sub
+
+' Returns to the next question after playing the attack animation.
+Sub ReturnToNextQuestion()
+    ' If the Question index is less than 14, redirect to the next question.
+    If Question < 14 Then
+        With SlideShowWindows(1).View
+        .GotoSlide (LastQuestion + 1)
+        End With
+    End If
+End Sub
+
+' Checks if the posttest is completed.
+Sub PostTestFinish()
+    ' If the user's score is perfect, run the boss' death animation.
+    If ActivePresentation.Slides(297).Shapes("!!BoxCorrect").TextFrame.TextRange = "15" And Question > 14 Then
+        ActivePresentation.SlideShowWindow.View.GotoSlide 292
+    ' If the Question index is more than 14, redirect to the results screen.
+    ElseIf Question > 14 Then
+        ActivePresentation.SlideShowWindow.View.GotoSlide 293
+    End If
+End Sub
+
+Sub test()
+    Debug.Print Question
+End Sub
           </code>
-          <br />
-          <code>
-            <span class="bold">=</span><span class="yellow">MAX</span><span class="green">(C1:C10)</span><p><span class="bold">Outputs</span> the <span class="green">maximum/highest value found</span> in <span class="yellow">cells C1 to C10</span></p>
+        </pre>
+      </section>
+
+      <section class="main-section" id="PostTest">
+        <header class="module-header">PostTest</header>
+        <p>This module handles the PostTest triggers and events, as well as the scoring system. One key difference between the PreTest and the PostTest module is the animations and the boss fight.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "PostTest"
+' Module which handles the PostTest logic and events.
+
+' Declare variables to keep track of scores.
+Dim ScoreCorrect, ScoreIncorrect, ScoreGrade As Integer
+Dim LastQuestion As Long
+
+' Initializes the elements in the posttest.
+Sub Initialize()
+    ' Sets the variables to 0.
+    Set Score = ActivePresentation.Slides(SlidePostResults) 'Posttest results screen slide
+    ScoreCorrect = 0
+    ScoreIncorrect = 0
+    ScoreGrade = 0
+    
+    ' Sets the results screen text to 0.
+    Score.Shapes("!!BoxCorrect").TextFrame.TextRange = ScoreCorrect
+    Score.Shapes("!!BoxIncorrect").TextFrame.TextRange = ScoreIncorrect
+    Score.Shapes("!!BoxGrade").TextFrame.TextRange = ScoreGrade & "%"
+    Score.Shapes("!!VBoxGrade").TextFrame.TextRange = ScoreGrade
+    
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxCorrectPost").TextFrame.TextRange = ScoreCorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxIncorrectPost").TextFrame.TextRange = ScoreIncorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxGradePost").TextFrame.TextRange = ScoreGrade & "%"
+    
+    ' Resets the boss' health bar text.
+    ' Rounds off the integer to display with no decimals.
+    HPText = Round((15 - ScoreCorrect) / 15 * 100, 0)
+    ' Loop for slides with the boss health bar.
+    For i = SlidePostFQ To SlidePostLast
+        ' Loop for the 15 blocks in the boss' health bar.
+        For n = 1 To 15
+            ' Sets all of the boss' health visibility to true, and the color to green.
+            ActivePresentation.Slides(i).Shapes("!!HPBar" & n).Visible = True
+            ActivePresentation.Slides(i).Shapes("!!HPBar" & n).Fill _
+            .ForeColor.RGB = RGB(141, 193, 21)
+        Next n
+            ' Displays the boss health count.
+            ActivePresentation.Slides(i).Shapes("!!HPText").TextFrame.TextRange = HPText & "/100"
+    Next i
+    
+    ' Calls subroutines to randomize the order of answers and to shuffle questions.
+    RandomizeAnswerOrder
+    ShuffleSlides
+End Sub
+
+' Registers a correct answer to the score count.
+Sub CorrectAnswer()
+    Set Score = ActivePresentation.Slides(SlidePostResults)
+    ' Adds a correct point to the score count.
+    ScoreCorrect = (ScoreCorrect) + 1
+    ' Displays the correct score on their respective elements. 
+    Score.Shapes("!!BoxCorrect").TextFrame.TextRange = ScoreCorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxCorrectPost").TextFrame.TextRange = ScoreCorrect
+    ' Calls the OverallGrade subroutine to calculate score percentage.
+    OverallGrade
+    ' Calls the HPBarFunction subroutine to display the updated health count.
+    HPBarFunction
+End Sub
+
+' Registers an incorrect answer to the score count.
+Sub IncorrectAnswer()
+    Set Score = ActivePresentation.Slides(SlidePostResults)
+    ' Adds an incorrect point to the score count.
+    ScoreIncorrect = (ScoreIncorrect) + 1
+    ' Displays the incorrect score on their respective elements. 
+    Score.Shapes("!!BoxIncorrect").TextFrame.TextRange = ScoreIncorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxIncorrectPost").TextFrame.TextRange = ScoreIncorrect
+    ' Calls the OverallGrade subroutine to calculate score percentage.
+    OverallGrade
+End Sub
+
+' Calculates the score percentage.
+Sub OverallGrade()
+    Set Score = ActivePresentation.Slides(SlidePostResults)
+    ' Formula for the Total score variable.
+    Total = ScoreCorrect + ScoreIncorrect
+    ' Formula for computing the percentage.
+    ScoreGrade = Round(ScoreCorrect / Total * 100, 1)
+    ' Displays the score percentage on their respective elements.
+    Score.Shapes("!!BoxGrade").TextFrame.TextRange = (ScoreGrade) & "%"
+    Score.Shapes("!!VBoxGrade").TextFrame.TextRange = ScoreGrade
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxGradePost").TextFrame.TextRange = ScoreGrade & "%"
+End Sub
+
+' Updates the boss' health bar.
+Sub HPBarFunction()
+    ' Declare a damage variable to subtract to health bar.
+    Dim Damage As Integer
+    ' Set the Damage variable to be equal to ScoreCorrect.
+    Damage = ScoreCorrect
+    ' Displays the health text by subtracting 15 to the correct score count, then converting it into a percentage with no decimals.
+    HPText = Round((15 - ScoreCorrect) / 15 * 100, 0)
+        ' Handles errors.
+        On Error GoTo HandleError
+        ' Loop to select and run the blocks of code on all slides with the health bar.
+        For i = SlidePostFQ To SlidePostLast
+            ' Sets the a part of the boss' health point's visibility to false based on the correct score count.
+            ActivePresentation.Slides(i).Shapes("!!HPBar" & (Damage)).Visible = False
+            ' Updates health count.
+            ActivePresentation.Slides(i).Shapes("!!HPText").TextFrame.TextRange = HPText & "/100"
+            ' Changes the health bar cololr if health is less than 8.
+            If ActivePresentation.Slides(i).Shapes("!!HPBar8").Visible = False Then
+                For n = 1 To 15
+                    ActivePresentation.Slides(i).Shapes("!!HPBar" & (n)).Fill _
+                    .ForeColor.RGB = RGB(229, 101, 46)
+                Next n
+            End If
+
+            ' Changes the health bar cololr if health is less than 11.
+            If ActivePresentation.Slides(i).Shapes("!!HPBar11").Visible = False Then
+                For n = 1 To 15
+                    ActivePresentation.Slides(i).Shapes("!!HPBar" & (n)).Fill _
+                    .ForeColor.RGB = RGB(169, 46, 69)
+                Next n
+            End If
+        Next i
+        
+HandleError:
+    Resume Next
+End Sub
+
+' Shuffles slides.
+Sub ShuffleSlides()
+    FirstSlide = SlidePostFQ
+    LastSlide = SlidePostLQ
+    
+    Randomize
+    ' Generate random number for First and Last slides.
+        RSN = Int((LastSlide - FirstSlide + 1) * Rnd + FirstSlide)
+    
+    ' Shuffles the slides.
+    For i = FirstSlide To LastSlide
+        ActivePresentation.Slides(i).MoveTo (RSN)
+    Next i
+End Sub
+
+' Randomizes the answer order.
+Sub RandomizeAnswerOrder()
+    ' Declare variable to manage answer order.
+    Dim AnswerOrder() As Integer
+    ReDim AnswerOrder(3) ' Sets four compartments for the answer order. (Zero-indexed: 0, 1, 2, 3 --> 4 compartments)
+
+    ' Initializes the randomizer.
+    For i = 0 To 3
+    AnswerOrder(i) = i + 1
+    Next i
+    
+    ' Sets the slides to shuffle answers in.
+    For i = SlidePostFQ To SlidePostLQ 
+    
+    ' Generates a random number.
+    Randomize
+    For n = 0 To 3
+    j = Int(4 * Rnd) ' Random number from 0 to 3
+    
+    temp = AnswerOrder(n)
+    AnswerOrder(n) = AnswerOrder(j)
+    AnswerOrder(j) = temp
+    
+    Next n
+    
+    ' Moves the Choices to random positions with fixed coordinates.
+    For j = 0 To 3
+
+        If AnswerOrder(j) = 1 Then
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Top = 372.5391
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Left = 757.6702
+            
+        ElseIf AnswerOrder(j) = 2 Then
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Top = 456.8076
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Left = 557.0136
+            
+        ElseIf AnswerOrder(j) = 3 Then
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Top = 372.6392
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Left = 558.3984
+            
+        ElseIf AnswerOrder(j) = 4 Then
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Top = 456.8076
+            ActivePresentation.Slides(i).Shapes("!!Choice" & j + 1).Left = 757.3005
+        End If
+
+    Next j
+    Next i
+    Exit Sub
+End Sub            
           </code>
-        </div>
+        </pre>
       </section>
-      <section class="main-section" id="Sorting">
-        <header>Sorting</header>
-        <p>One of the best features of <span class="green">Excel</span> is that you can manage information efficiently by <span class="yellow">sorting</span> your data alphabetically, numerically, and in many other ways.
-</p>
-        <ol class="list-elements">
-          <li><span class="green">Sort Sheet</span><p>Sorts all data in your worksheet by one column. Related information is kept together when sorted.</p></li>
-          <li><span class="yellow">Sort Range</span><p>Sorts the data in a range of cells, especially helpful when working with a sheet that contains several tables. Only the contents of the specified table will be sorted.</p></li>
-        </ol>
+
+      <section class="main-section" id="PreTest">
+        <header class="module-header">PreTest</header>
+        <p>Similar to the PostTest module, this module handles the PreTest triggers, events, and scoring system.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "PreTest"
+' Module for handling the logic and events within the PreTest.
+
+' Declare variables for keeping track of score count..
+Dim ScoreCorrect, ScoreIncorrect, ScoreGrade As Integer
+
+' Initializes pretest elements.
+Sub Initialize()
+    Set Score = ActivePresentation.Slides(SlidePreResults)
+    ' Sets pretest variables to 0.
+    ScoreCorrect = 0
+    ScoreIncorrect = 0
+    ScoreGrade = 0
+    CheckpointPretest = False
+    
+    ' Displays 0 on the results.
+    Score.Shapes("!!BoxCorrect").TextFrame.TextRange = ScoreCorrect
+    Score.Shapes("!!BoxIncorrect").TextFrame.TextRange = ScoreIncorrect
+    Score.Shapes("!!BoxGrade").TextFrame.TextRange = ScoreGrade & "%"
+    Score.Shapes("!!VBoxGrade").TextFrame.TextRange = ScoreGrade
+    
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxCorrectPre").TextFrame.TextRange = ScoreCorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxIncorrectPre").TextFrame.TextRange = ScoreIncorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxGradePre").TextFrame.TextRange = ScoreGrade & "%"
+    
+    ' Calls subroutines to randomize answer order and shuffle slides.
+    RandomizeAnswerOrder
+    ShuffleSlides
+End Sub
+
+' Changes the color of the start button upon hovering.
+Sub ResponseStartHover()
+    Set Slide = ActivePresentation.Slides(1)
+    Slide.Shapes("ResponseStart").TextFrame.TextRange.Font.Color.RGB = RGB(255, 217, 102)
+End Sub
+
+' Revers the start button color to white.
+Sub ResponseStartHoverFalse()
+    Set Slide = ActivePresentation.Slides(1)
+    Slide.Shapes("ResponseStart").TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
+End Sub
+
+' Registers a correct answer to the score count.
+Sub CorrectAnswer()
+    Set Score = ActivePresentation.Slides(SlidePreResults)
+    ' Adds a correct point to the score count.
+    ScoreCorrect = (ScoreCorrect) + 1
+    ' Displays the correct score on their respective elements. 
+    Score.Shapes("!!BoxCorrect").TextFrame.TextRange = ScoreCorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxCorrectPre").TextFrame.TextRange = ScoreCorrect
+    ' Calls the OverallGrade subroutine to calculate score percentage.
+    OverallGrade
+End Sub
+
+' Registers an incorrect answer to the score count.
+Sub IncorrectAnswer()
+    Set Score = ActivePresentation.Slides(SlidePreResults)
+    ' Adds an incorrect point to the score count.
+    ScoreIncorrect = (ScoreIncorrect) + 1
+    ' Displays the incorrect score count on their respective elements. 
+    Score.Shapes("!!BoxIncorrect").TextFrame.TextRange = ScoreIncorrect
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxIncorrectPre").TextFrame.TextRange = ScoreIncorrect
+    ' Calls the OverallGrade subroutine to calculate score percentage.
+    OverallGrade
+End Sub
+
+' Calculates the score percentage.
+Sub OverallGrade()
+    Set Score = ActivePresentation.Slides(SlidePreResults) 
+    ' Formula for the Total score variable.
+    Total = ScoreCorrect + ScoreIncorrect
+    ' Formula for computing the percentage.
+    ScoreGrade = Round(ScoreCorrect / Total * 100, 1)
+    ' Displays the score percentage on their respective elements.
+    Score.Shapes("!!BoxGrade").TextFrame.TextRange = (ScoreGrade) & "%"
+    Score.Shapes("!!VBoxGrade").TextFrame.TextRange = ScoreGrade
+    ActivePresentation.Slides(SlideFinalResults).Shapes("!!BoxGradePre").TextFrame.TextRange = ScoreGrade & "%"
+End Sub
+
+' Shuffles slides.
+Sub ShuffleSlides()
+    FirstSlide = SlidePreFQ 
+    LastSlide = SlidePreLQ  
+    
+    Randomize
+    ' Generate random number for First and Last slides.
+        RSN = Int((LastSlide - FirstSlide + 1) * Rnd + FirstSlide)
+    
+    ' Shuffles the slides.
+    For i = FirstSlide To LastSlide
+        ActivePresentation.Slides(i).MoveTo (RSN)
+    Next i
+End Sub
+
+' Randomizes the answer order.
+Sub RandomizeAnswerOrder()
+    ' Declare variable to manage answer order.
+    Dim AnswerOrder() As Integer
+    ReDim AnswerOrder(3) ' Sets four compartments for the answer order. (Zero-indexed: 0, 1, 2, 3 --> 4 compartments)
+    
+    ' Initializes the randomizer.
+    For i = 0 To 3
+    AnswerOrder(i) = i + 1
+    Next i
+    
+    ' Sets the slides to shuffle answers in.
+    For i = SlidePreFQ To SlidePreLQ 
+    
+    ' Generates a random number.
+    Randomize
+    For n = 0 To 3
+    j = Int(4 * Rnd) ' Random number from 0 to 3
+    
+    temp = AnswerOrder(n)
+    AnswerOrder(n) = AnswerOrder(j)
+    AnswerOrder(j) = temp
+    
+    Next n
+    
+    ' Moves the Choices to random positions with fixed coordinates.
+    For j = 0 To 3
+    
+    On Error GoTo HandleError
+        If AnswerOrder(j) = 1 Then
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Top = 353.2105
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Left = 86.15606
+            
+        ElseIf AnswerOrder(j) = 2 Then
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Top = 353.1104
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Left = 296.5051
+            
+        ElseIf AnswerOrder(j) = 3 Then
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Top = 437.3789
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Left = 86.15606
+            
+        ElseIf AnswerOrder(j) = 4 Then
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Top = 437.3789
+            ActivePresentation.Slides(i).Shapes("Choice" & j + 1).Left = 296.5051
+        End If
+
+    Next j
+    Next i
+    Exit Sub
+    
+HandleError:
+    Resume Next
+End Sub            
+          </code>
+        </pre>
       </section>
-      <section class="main-section" id="Charts">
-        <header>Charts</header>
-        <p>A <span class="yellow">chart</span> is a graphical representation of your workbook data which makes it easier to visualize comparisons and trends.
-</p>
-        <ol class="list-elements">
-          <li><span class="green">Column</span><p>Uses vertical bars to represent data. Most frequently used for comparing information.</p></li>
-          <li><span class="yellow">Line</span><p>Ideal for showing trends. The data points are connected by lines, which makes it easier to see the increase or decrease of value over time.</p></li>
-          <li><span class="green">Pie</span><p>Used to compare proportions. Depicts values that make up a percentage of the whole and are shown as slices of a pie.</p></li>
-          <li><span class="yellow">Area</span><p>Similar to a line chart, except the areas under the lines are shaded.</p></li>
-          <li><span class="green">Surface</span><p>Allows you to display data in 3D landscape. Lets you see a variety of information at the same time. Works best with large data sets.</p></li>
-        </ol>
+
+      <section class="main-section" id="UploadResults">
+        <header class="module-header">UploadResults</header>
+        <p>This module handles the exporting of user data to a local file, or to a database if possible.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "UploadResults"
+' Responsible for handling score files. (Exports and Uploads)\
+
+' Declare variables to keep track of scores.
+Dim Correct, Incorrect, Grade, Name, Correct1, Incorrect1, Grade1 As Integer
+Dim XCorrect, XIncorrect, XGrade, X1Correct, X1Incorrect, X1Grade As Variant
+
+' Gets the username from the user.
+Sub GetName()
+    Dim UserName As String
+    ' Displays an input box prompting for a name.
+    UserName = InputBox("Please enter your name.", "UserName", "Enter your name here")
+    ActivePresentation.SlideShowWindow.View.Next
+    ActivePresentation.Slides(17).Shapes("!!Dialogue17").TextFrame.TextRange = ("Oh! Yes, my name is " & UserName & "!")
+End Sub
+
+' Calls subroutines for uploading results.
+Sub UploadButton()
+    GenerateBackupResults
+    SendResultsToExcel
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+' Calls subroutines for uploading final results.
+Sub finalUploadButton()
+    GenerateAllBackupResults
+    SendUSQToExcel
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+' Exports the results to an Excel workbook, which then gets uploaded to Google forms.
+Sub SendResultsToExcel()
+    ' Handles errors.
+    On Error GoTo ErrorHandler
+        ' Calls the GenerateBackupResults subroutine before uploading to forms.
+        GenerateBackupResults
+
+        ' Declares variables to run Excel.
+        Dim FileName As String
+    
+        Dim xlsApp As Object
+        Set xlsApp = CreateObject("Excel.Application")
+        
+        Dim xlsWB As Object
+        Set xlsWB = xlsApp.Workbooks.Open(ActivePresentation.Path & "\DATA.xlsm")
+            ' Sets the test type to PreAssessment if the Pretest Checkpoint is false, else set to PostAssessment.
+            If CheckpointPretest = False Then
+                Set Results = ActivePresentation.Slides(SlidePreResults)
+                TestType = "PreAssessment"
+            Else
+                Set Results = ActivePresentation.Slides(SlidePostResults)
+                TestType = "PostAssessment"
+            End If
+                
+                ' Stores the scores in a temporary variable.
+                XCorrect = Results.Shapes("!!BoxCorrect").TextFrame.TextRange
+                XIncorrect = Results.Shapes("!!BoxIncorrect").TextFrame.TextRange
+                XGrade = Results.Shapes("!!VBoxGrade").TextFrame.TextRange
+
+                ' Convert the strings stored in temporary variables to integers.
+                Correct = CInt(XCorrect)
+                Incorrect = CInt(XIncorrect)
+                Grade = CInt(XGrade)
+
+                ' Define cell addresses and values for the Excel workbook.
+                xlsWB.Worksheets(1).Range("A1") = "Name"
+                xlsWB.Worksheets(1).Range("A2") = UserName
+                
+                xlsWB.Worksheets(1).Range("B1") = "Correct"
+                xlsWB.Worksheets(1).Range("B2") = Correct
+                
+                xlsWB.Worksheets(1).Range("C1") = "Incorrect"
+                xlsWB.Worksheets(1).Range("C2") = Incorrect
+                
+                xlsWB.Worksheets(1).Range("D1") = "Overall Grade"
+                xlsWB.Worksheets(1).Range("D2") = Grade
+                
+                xlsWB.Worksheets(1).Range("E1") = "Type"
+                xlsWB.Worksheets(1).Range("E2") = TestType
+                
+                xlsWB.Worksheets(1).Range("J1") = "Send"
+                
+        ' Close Excel without saving. (Saving causes bugs for some reason)
+        ' A block of code within the workbook will automatically run upon detecting changes and be uploaded to the Google forms.
+        xlsWB.Close False
+        xlsApp.Quit
+        
+        Set xlsWB = Nothing
+        Set xlsApp = Nothing
+    Exit Sub
+
+' Notifies the user that an error has occured.
+ErrorHandler:
+    MsgBox "Error uploading score to database; a backup file was created.", vbCritical, "Error!"
+    Resume Next
+End Sub
+
+' Exports the user satisfaction questionnaire to an Excel workbook.
+Sub SendUSQToExcel()
+        ' Handles errors.
+        On Error GoTo ErrorHandler
+        ' Generates backup results.
+        GenerateBackupResults
+
+        ' Declares variables for running Excel.
+        Dim FileName As String
+    
+        Dim xlsApp As Object
+        Set xlsApp = CreateObject("Excel.Application")
+        
+        Dim xlsWB As Object
+        Set xlsWB = xlsApp.Workbooks.Open(ActivePresentation.Path & "\usqDATA.xlsm")
+                ' Sets the cell addresses and values.
+                xlsWB.Worksheets(1).Range("A1") = "Q1"
+                xlsWB.Worksheets(1).Range("A2") = USQ1
+                
+                xlsWB.Worksheets(1).Range("B1") = "Q2"
+                xlsWB.Worksheets(1).Range("B2") = USQ2
+                
+                xlsWB.Worksheets(1).Range("C1") = "Q3"
+                xlsWB.Worksheets(1).Range("C2") = USQ3
+                
+                xlsWB.Worksheets(1).Range("D1") = "Q4"
+                xlsWB.Worksheets(1).Range("D2") = USQ4
+                
+                xlsWB.Worksheets(1).Range("E1") = "Q5"
+                xlsWB.Worksheets(1).Range("E2") = USQ5
+                
+                xlsWB.Worksheets(1).Range("F1") = "Q6"
+                xlsWB.Worksheets(1).Range("F2") = USQ6
+                
+                xlsWB.Worksheets(1).Range("G1") = "Q7"
+                xlsWB.Worksheets(1).Range("G2") = USQ7
+                
+                xlsWB.Worksheets(1).Range("H1") = "Q8"
+                xlsWB.Worksheets(1).Range("H2") = USQ8
+                
+                xlsWB.Worksheets(1).Range("J1") = "Send"
+
+        ' Close without saving.
+        xlsWB.Close False
+        xlsApp.Quit
+        
+        Set xlsWB = Nothing
+        Set xlsApp = Nothing
+    Exit Sub
+
+' Notifies the user that an error has occured.
+ErrorHandler:
+    MsgBox "Error uploading score to database; a backup file was created.", vbCritical, "Error!"
+    Resume Next
+End Sub
+
+' Generates backup results. (.txt file)
+Sub GenerateBackupResults()
+    ' If pretest checkpoint is false, test type will be PreAssessment, otherwise, PostAssessment.
+    If CheckpointPretest = False Then
+        Set Results = ActivePresentation.Slides(SlidePreResults)
+        TestType = "PreAssessment"
+    Else
+        Set Results = ActivePresentation.Slides(SlidePostResults)
+        TestType = "PostAssessment"
+    End If
+    
+    ' Stores the scores in a temporary variable.
+    XCorrect = Results.Shapes("!!BoxCorrect").TextFrame.TextRange
+    XIncorrect = Results.Shapes("!!BoxIncorrect").TextFrame.TextRange
+    XGrade = Results.Shapes("!!VBoxGrade").TextFrame.TextRange
+
+    ' Convert strings to integers.
+    Correct = CInt(XCorrect)
+    Incorrect = CInt(XIncorrect)
+    Grade = CInt(XGrade)
+    
+    ' Define variables to export to .txt
+    Dim txtPath As String
+
+    ' Set target path.
+    txtPath = (ActivePresentation.Path & "\" & TestType & "DATA.txt")
+    Dim FSO As FileSystemObject
+    Set FSO = New FileSystemObject
+    
+    Dim txtFile As TextStream
+    ' Define values for the lines of the text file.
+    Set txtFile = FSO.CreateTextFile(txtPath, True)
+        txtFile.WriteLine ("Name=" & UserName)
+        txtFile.WriteLine ("Correct=" & Correct)
+        txtFile.WriteLine ("Incorrect=" & Incorrect)
+        txtFile.WriteLine ("Grade=" & Grade)
+        txtFile.WriteLine ("Type=" & TestType)
+    txtFile.Close
+    
+    Set txtFile = Nothing
+    Set FSO = Nothing
+End Sub
+
+' Generates a collective final backup results for both pretest, posttest, and user satisfaction questionnaire.
+Sub GenerateAllBackupResults()
+    ' Sets the target slides to gather scores from.
+    Set Results = ActivePresentation.Slides(SlidePreResults)
+    TestType = "PreAssessment"
+
+    Set Results1 = ActivePresentation.Slides(SlidePostResults)
+    TestType = "PostAssessment"
+    
+    ' Stores scores in temporary variables.
+    XCorrect = Results.Shapes("!!BoxCorrect").TextFrame.TextRange
+    XIncorrect = Results.Shapes("!!BoxIncorrect").TextFrame.TextRange
+    XGrade = Results.Shapes("!!VBoxGrade").TextFrame.TextRange
+    
+    X1Correct = Results1.Shapes("!!BoxCorrect").TextFrame.TextRange
+    X1Incorrect = Results1.Shapes("!!BoxIncorrect").TextFrame.TextRange
+    X1Grade = Results1.Shapes("!!VBoxGrade").TextFrame.TextRange
+
+    ' Converts strings to integers.
+    Correct = CInt(XCorrect)
+    Incorrect = CInt(XIncorrect)
+    Grade = CInt(XGrade)
+    
+    Correct1 = CInt(X1Correct)
+    Incorrect1 = CInt(X1Incorrect)
+    Grade1 = CInt(X1Grade)
+    
+    ' Declare variables to export to .txt
+    Dim txtPath As String
+    ' Sets target path.
+    txtPath = (ActivePresentation.Path & "\" & "finalDATA.txt")
+    Dim FSO As FileSystemObject
+    Set FSO = New FileSystemObject
+    
+    Dim txtFile As TextStream
+    ' Define values for the lines in the text file.
+    Set txtFile = FSO.CreateTextFile(txtPath, True)
+        txtFile.WriteLine ("Name = " & UserName)
+        txtFile.WriteLine ("Correct = " & Correct)
+        txtFile.WriteLine ("Incorrect = " & Incorrect)
+        txtFile.WriteLine ("Grade = " & Grade)
+        txtFile.WriteLine ("Type = " & "PreTest")
+        txtFile.WriteBlankLines (1)
+        txtFile.WriteLine ("Correct = " & Correct1)
+        txtFile.WriteLine ("Incorrect = " & Incorrect1)
+        txtFile.WriteLine ("Grade = " & Grade1)
+        txtFile.WriteLine ("Type = " & "PostTest")
+        txtFile.WriteBlankLines (1)
+        txtFile.WriteLine ("USQ1 = " & USQ1)
+        txtFile.WriteLine ("USQ2 = " & USQ2)
+        txtFile.WriteLine ("USQ3 = " & USQ3)
+        txtFile.WriteLine ("USQ4 = " & USQ4)
+        txtFile.WriteLine ("USQ5 = " & USQ5)
+        txtFile.WriteLine ("USQ6 = " & USQ6)
+        txtFile.WriteLine ("USQ7 = " & USQ7)
+        txtFile.WriteLine ("USQ8 = " & USQ8)
+    txtFile.Close
+    
+    Set txtFile = Nothing
+    Set FSO = Nothing
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+          </code>
+        </pre>
       </section>
+
+      <section class="main-section" id="UserSatisfaction">
+        <header class="module-header">UserSatisfaction</header>
+        <p>This module handles the scoring system for the user satisfaction questionnaire at the end of the program.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "UserSatisfaction"
+' Module responsible for handling UserSatisfaction scores.
+Public USQ1, USQ2, USQ3, USQ4, USQ5, USQ6, USQ7, USQ8 As Integer
+
+' Buttons to assign scores in User Satisfaction Questionnaire variables.
+Sub USQR5()
+    If CurrentSlide = 305 Then
+        USQ1 = 5
+    ElseIf CurrentSlide = 306 Then
+        USQ2 = 5
+    ElseIf CurrentSlide = 307 Then
+        USQ3 = 5
+    ElseIf CurrentSlide = 308 Then
+        USQ4 = 5
+    ElseIf CurrentSlide = 309 Then
+        USQ5 = 5
+    ElseIf CurrentSlide = 310 Then
+        USQ6 = 5
+    ElseIf CurrentSlide = 311 Then
+        USQ7 = 5
+    ElseIf CurrentSlide = 312 Then
+        USQ8 = 5
+    End If
+    
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+Sub USQR4()
+    If CurrentSlide = 305 Then
+        USQ1 = 4
+    ElseIf CurrentSlide = 306 Then
+        USQ2 = 4
+    ElseIf CurrentSlide = 307 Then
+        USQ3 = 4
+    ElseIf CurrentSlide = 308 Then
+        USQ4 = 4
+    ElseIf CurrentSlide = 309 Then
+        USQ5 = 4
+    ElseIf CurrentSlide = 310 Then
+        USQ6 = 4
+    ElseIf CurrentSlide = 311 Then
+        USQ7 = 4
+    ElseIf CurrentSlide = 312 Then
+        USQ8 = 4
+    End If
+    
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+Sub USQR3()
+    If CurrentSlide = 305 Then
+        USQ1 = 3
+    ElseIf CurrentSlide = 306 Then
+        USQ2 = 3
+    ElseIf CurrentSlide = 307 Then
+        USQ3 = 3
+    ElseIf CurrentSlide = 308 Then
+        USQ4 = 3
+    ElseIf CurrentSlide = 309 Then
+        USQ5 = 3
+    ElseIf CurrentSlide = 310 Then
+        USQ6 = 3
+    ElseIf CurrentSlide = 311 Then
+        USQ7 = 3
+    ElseIf CurrentSlide = 312 Then
+        USQ8 = 3
+    End If
+    
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+Sub USQR2()
+    If CurrentSlide = 305 Then
+        USQ1 = 2
+    ElseIf CurrentSlide = 306 Then
+        USQ2 = 2
+    ElseIf CurrentSlide = 307 Then
+        USQ3 = 2
+    ElseIf CurrentSlide = 308 Then
+        USQ4 = 2
+    ElseIf CurrentSlide = 309 Then
+        USQ5 = 2
+    ElseIf CurrentSlide = 310 Then
+        USQ6 = 2
+    ElseIf CurrentSlide = 311 Then
+        USQ7 = 2
+    ElseIf CurrentSlide = 312 Then
+        USQ8 = 2
+    End If
+    
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+
+Sub USQR1()
+    If CurrentSlide = 305 Then
+        USQ1 = 1
+    ElseIf CurrentSlide = 306 Then
+        USQ2 = 1
+    ElseIf CurrentSlide = 307 Then
+        USQ3 = 1
+    ElseIf CurrentSlide = 308 Then
+        USQ4 = 1
+    ElseIf CurrentSlide = 309 Then
+        USQ5 = 1
+    ElseIf CurrentSlide = 310 Then
+        USQ6 = 1
+    ElseIf CurrentSlide = 311 Then
+        USQ7 = 1
+    ElseIf CurrentSlide = 312 Then
+        USQ8 = 1
+    End If
+    
+    ActivePresentation.SlideShowWindow.View.Next
+End Sub
+          </code>
+        </pre>
+      </section>
+
+      <fieldset class="main-divider"><legend>Development Modules</legend></fieldset>
+
+      <section class="main-section" id="FindObjectPosition">
+        <header class="module-header">FindObjectPosition</header>
+        <p>This module automates the process of finding the object's position, as well as its other properties.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "FindObjectPosition"
+' Module for finding object positions within the PowerPoint.
+' Not used during the program's run time; only used when developing/debugging.
+
+Sub FindPos()
+    i = 35
+    Debug.Print ActivePresentation.Slides(i).Shapes("DialogueBox").Top
+    Debug.Print ActivePresentation.Slides(i).Shapes("DialogueBox").Left
+End Sub
+
+Sub FindSize()
+    i = 74
+    For n = 1 To 4
+    Debug.Print ActivePresentation.Slides(i).Shapes("!!Choice" & n).Height
+    Debug.Print ActivePresentation.Slides(i).Shapes("!!Choice" & n).Width
+    Next n
+End Sub
+          </code>
+        </pre>
+      </section>
+
+      <section class="main-section" id="ImportQuestions">
+        <header class="module-header">ImportQuestions</header>
+        <p>This module automates the process of importing questions to the slides from an Excel workbook.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "ImportQuestionsFromExcel"
+' Module responsible for the automation of importing the test questions from an Excel workbook.
+' Only used during development.
+
+Sub ImportQuestions()
+    ' Declare and set variable for opening the Excel workbook.
+    Dim xlsWB As Object
+    Set xlsWB = CreateObject("Excel.Application").Workbooks.Open(ActivePresentation.Path & "\QuestionSheet.xlsx")
+    
+        For i = 1 To 2 'Number of slides.
+            ActivePresentation.Slides(i).Shapes("!!QuestionBox").TextFrame.TextRange = xlsWB.Worksheets(2).Range("A" & i - 51)
+            ActivePresentation.Slides(i).Shapes("!!ChoiceA").TextFrame.TextRange = xlsWB.Worksheets(2).Range("B" & i - 51)
+            ActivePresentation.Slides(i).Shapes("!!ChoiceB").TextFrame.TextRange = xlsWB.Worksheets(2).Range("C" & i - 51)
+            ActivePresentation.Slides(i).Shapes("!!ChoiceC").TextFrame.TextRange = xlsWB.Worksheets(2).Range("D" & i - 51)
+            ActivePresentation.Slides(i).Shapes("!!ChoiceD").TextFrame.TextRange = xlsWB.Worksheets(2).Range("E" & i - 51)
+        Next i
+        'Integer i must be equal to 2; remember to adjust the minus value later on when adjusting the slide number.
+        
+    ' Close the workbook.
+    xlsWB.Close
+    Set xlsWB = Nothing
+End Sub
+          </code>
+        </pre>
+      </section>
+
+      <section class="main-section" id="RenameShapes">
+        <header class="module-header">RenameShapes</header>
+        <p>This module automates the process of renaming shapes, as well as modifying many other properties of the shape.</p>
+        <pre>
+          <code class="language-vbnet">
+Attribute VB_Name = "RenameShapes"
+' Module for automating the process of renaming shapes and modifying several properties, too.
+' Only used during development; not used in running the program.
+
+' Renames shapes.
+Sub Rename()
+    ' Handles errors in case a shape is not detected in a slide.
+    On Error GoTo HandleError
+        ' Changes the name of a shape from "X" to "Y" in the given slide numbers.
+        For i = 1 To 303
+                ActivePresentation.Slides(i).Shapes("!!Dialogue").Name = "!!Dialogue" & i
+        Next i
+    Exit Sub
+        
+HandleError:
+    Resume Next
+End Sub
+
+' Resizes shapes.
+Sub Resize()
+    ' Handles errors in case a shape is not detected in a slide.
+    On Error GoTo HandleError
+        ' Changes the height and width dimensions of the chosen shapes in the given slide numbers.
+        For i = 74 To 97
+            ActivePresentation.Slides(i).Shapes("!!Choice1").Height = 70.16835
+            ActivePresentation.Slides(i).Shapes("!!Choice1").Width = 190.8
+            
+            ActivePresentation.Slides(i).Shapes("!!Choice2").Height = 70.16835
+            ActivePresentation.Slides(i).Shapes("!!Choice2").Width = 190.8
+            
+            ActivePresentation.Slides(i).Shapes("!!Choice3").Height = 70.16835
+            ActivePresentation.Slides(i).Shapes("!!Choice3").Width = 190.8
+            
+            ActivePresentation.Slides(i).Shapes("!!Choice4").Height = 70.16835
+            ActivePresentation.Slides(i).Shapes("!!Choice4").Width = 190.8
+            
+        Next i
+        
+    Exit Sub
+            
+HandleError:
+    Resume Next
+End Sub
+
+' Adds an action to the shapes.
+Sub AddAction()
+    ' Handles errors in case a shape is not detected in a slide.
+    On Error GoTo HandleError
+        ' Selects the slide numbers.
+        For i = 35 To 49
+            ' (Optional for multiple selections) Run a loop.
+            For n = 2 To 4
+            ' Set target shape.
+            Set Choice = ActivePresentation.Slides(i).Shapes("Choice" & n)
+            
+            ' Modify action properties.
+            With Choice.ActionSettings(ppMouseClick) ' Detects when clicked.
+                .Action = ppActionRunMacro ' Specifies the action to run, in this case, it runs a macro.
+                .Run = "PreTest.IncorrectAnswer" ' Specifies which macro to run.
+            End With
+            Next n
+                
+        Next i
+        
+    Exit Sub
+        
+HandleError:
+    Resume Next
+End Sub
+
+' Changes the text displayed.
+Sub ChangeText()
+    ' Handles errors in case a shape is not detected in a slide.
+    On Error GoTo HandleError
+        ' Set target slides.
+        For i = 52 To 170
+            Set Slide = ActivePresentation.Slides(i)
+                ' Changes a shape's text from "X" to "Y"
+                Slide.Shapes("!!LabelSC").TextFrame.TextRange = "Aurora"
+                Slide.Shapes("!!LabelAS").TextFrame.TextRange = "Tenebris"
+                Slide.Shapes("!!LabelOF").TextFrame.TextRange = "Xenolumina"
+        Next i
+    Exit Sub
+    
+HandleError:
+    Resume Next
+End Sub
+
+' Deletes shapes.
+Sub DeleteShape()
+    ' Handles errors in case a shape is not detected in a slide.
+    On Error GoTo HandleError
+        ' Sets target slides.
+        For i = 256 To 287
+            With ActivePresentation.Slides(i)
+                ' Deletes target shapes.
+                .Shapes("!!PlanetSurface").Delete
+                .Shapes("!!BGSpace").Delete
+                .Shapes("!!BossShadow").Delete
+                .Shapes("!!BobShadow").Delete
+            End With
+        Next i
+    Exit Sub
+
+HandleError:
+    Resume Next
+End Sub
+
+' Modifies shape z-index order. (Sets z-index)
+Sub SendToBack()
+    ' Handles errors in case a shape is not detected in a slide.
+    On Error GoTo HandleError
+        ' Sets target slides.
+        For i = 32 To 55
+            With ActivePresentation.Slides(i)
+                ' Brings target to front.
+                .Shapes("!!TransitionTop").ZOrder msoBringToFront
+                .Shapes("!!TransitionBot").ZOrder msoBringToFront
+            End With
+        Next i
+    Exit Sub
+
+HandleError:
+    Resume Next
+End Sub
+
+' Detects if Odd number.
+Sub OnOddNumber()
+    On Error GoTo HandleError
+        ' Set target slides.
+        For i = 1 To 303
+            With ActivePresentation.Slides(i)
+                ' Conditional to rename dialogues based on odd or even.
+                If i Mod 2 = 0 Then
+                    .Shapes("!!Dialogue").Name = "!!Dialogue"
+                Else
+                    .Shapes("!!Dialogue").Name = "!!Dialogue1"
+                End If
+            End With
+        Next i
+    Exit Sub
+
+HandleError:
+    Resume Next
+End Sub
+
+' Adds sound effects.
+Sub AddSFX()
+    ' Handles errors in case a shape is not detected in a slide.
+        ' Sets target slides.
+        For i = 1 To 303
+            ' Imports and sets a sound effect to play on click.
+            With ActivePresentation.Slides(i).Shapes("!!Choice4").ActionSettings(ppMouseClick)
+                .SoundEffect.ImportFromFile "C:\Users\[REDACTED]\Downloads\wrong2.wav"
+            End With
+        Next i
+    Exit Sub
+    
+HandleError:
+    Resume Next
+End Sub            
+          </code>
+        </pre>
+      </section>
+
       <section class="main-section" id="References">
         <header>References</header>
-        <p>The contents of the program is based on the book "<span class="yellow">E-tech:</span> <span class="green">technology empowerment in a connected, digital world</span>" <br>Written by <span class="yellow">Melissa P. Juanillo,</span> <span class="green">MIT,</span> and <span class="yellow">Emilita M. Tan,</span> <span class="green">MAET</span><br />Edited by <span class="yellow">Jaime D. L. Caro,</span> <span class="green">Ph.D.</span></p>
+        <p>
+          The contents of the program is based on the book "<span class="yellow">E-tech:</span> <span class="green">technology empowerment in a connected, digital world</span>" <br>Written by <span class="yellow">Melissa P. Juanillo,</span> <span class="green">MIT,</span> and <span class="yellow">Emilita M. Tan,</span> <span class="green">MAET</span><br />Edited by <span class="yellow">Jaime D. L. Caro,</span> <span class="green">Ph.D.</span>
+        </p>
+        <br/>
+        <p>
+          <span class="yellow">Website</span> & <span class="green">Programming</span>: <a class="socials-link" href="https://github.com/PeppermintSnow">@PeppermintSnow</a><br/>
+          <span class="yellow">Character</span> <span class="green">Sprites</span>: <a class="socials-link" href="">@Skinyoensi</a><br/>
+          <span class="yellow">Background</span> & <span class="green">Layout</span>: <a class="socials-link" href="">@JCLim</a><br/>
+          <span class="yellow">Storyline</span> & <span class="green">Dialogue</span>: <a class="socials-link" href="">@Tsuuki</a><br/>
+          <span class="yellow">Content</span> & <span class="green">Lessons</span>: <a class="socials-link" href="">@PauV</a>
+        </p>
       </section>
     </main>
-    <script src="loadSrcCode.js"></script>
+    </div>
+    <script>hljs.highlightAll();</script>
   </body>
 </html>
