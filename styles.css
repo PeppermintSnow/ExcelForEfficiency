@@ -31,6 +31,7 @@
 
 html {
   scroll-behavior: smooth-scroll;
+  overflow-x: hidden;
 }
 
 body {
@@ -73,12 +74,12 @@ body {
   margin: auto;
 }
 
-#logo {
+.logo {
   width: 100%;
   height: auto;
 }
 
-#logo-link {
+.logo-link {
   width: 100px;
   height: 100px;
   margin: auto;
@@ -228,6 +229,8 @@ body {
 
 .socials-card, .socials-card:active {
   background-color: var(--background2);
+  height: 100px;
+  overflow: hidden;
   padding-top: 10px;
   border-radius: 25px;
   transition: 0.3s ease-in-out;
@@ -260,12 +263,6 @@ body {
     justify-content: center;
 }
 
-.socials-link {
-  text-decoration: none;
-  height: 30px;
-  font-size: 1.5em;
-}
-
 .socials-icon {
   display: inline;
   width: 30px;
@@ -274,6 +271,9 @@ body {
 }
 
 .socials-link {
+  text-decoration: none;
+  height: 30px;
+  font-size: 1.5em;
   font-weight: bold;
   color: var(--text);
   transition: 0.3s ease-in-out;
@@ -336,26 +336,58 @@ main footer {
   color: var(--green)
 }
 
-@media (max-width: 768px) {
+/* Small screen styles */
+.collapse-nav {
+  display: none; /*Change this*/
+  position: fixed;
+  top: 0;
+  width: 60px;
+  height: 100vh;
+  background-image: url(./images/banner/banner_head.png);
+  background-size: cover;
+  border: 3px solid var(--background2);
+}
+
+#collapse-nav {
+  width: 50px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 960px) {
   #navbar {
-    width: 200px;
+    position: fixed;
+    width: 0;
+    transition: 0.5s width;
   }
 
-  #logo-link {
-    width: 50px;
-    height: 50px;
-    margin-top: 20px;
+  .grid-wrapper {
+    display: block;
   }
-
-  #navbar header {
-    font-size: 1.8em;
-  }
-
+  
   #main-doc {
-    left: 210px;
+    transition: 0.5s margin-left;
   }
 
-  #main-doc header {
-    font-size: 1.8em;
+  .socials-tile {
+    width: 45%;
+    height: 70px;
+  }
+
+  .socials-card {
+    height: 70px;
+  }
+
+  .socials-card p {
+    font-size: 0.7em;
+  }
+
+  .socials-icon {
+    width: 20px;
+    margin-right: 0;
+  }
+
+  .socials-link {
+    font-size: 0.8em;
   }
 }

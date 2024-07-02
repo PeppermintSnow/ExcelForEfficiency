@@ -14,7 +14,7 @@
     <div class="grid-wrapper">
     <nav id="navbar">
       <div class="header-container">
-        <a id="logo-link" href=""><img id="logo" src="images/head/logo.png" /></a>
+        <a class="logo-link" href=""><img class="logo" src="images/head/logo.png" /></a>
         <header><span class="green">Excel</span> <span class="yellow">For Efficiency!</span></header>
       </div>
       <ul>
@@ -51,7 +51,11 @@
           <p>All rights reserved.</p>
       </footer>
     </nav>
+    <nav class="collapse-nav">
+      <img id="collapse-nav" src="./images/icons/burger.svg" />
+    </nav>
     <main id="main-doc" class="flex-wrapper">
+      <div class="small-screen-spacer"></div>
       <section class="main-section" id="About">
         <header class="header">About</header>
         <p><span class="green">Excel</span> <span class="yellow">For Efficiency!</span> is an educational primer with the objective of teaching its
@@ -1769,9 +1773,9 @@ End Sub
             <div class="socials-card">
               <p><span class="yellow">Background</span> & <span class="green">Layout</span></p>
               <div class="socials-link-container">
-                <a class="socials-link" href="">
+                <a class="socials-link" href="https://www.instagram.com/jclim0621/?hl=en">
                 <img class="socials-icon" src="./images/icons/instagram-icon.svg" />
-                @JCLim</a>
+                @jclim0621</a>
               </div>
             </div>
           </div>
@@ -1803,6 +1807,7 @@ End Sub
       </footer>
     </main>
     </div>
+    <script src="collapseNav.js"></script>
     <script>hljs.highlightAll();</script>
   </body>
 </html>
